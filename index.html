@@ -314,6 +314,37 @@ input[type=range]{width:100%;accent-color:var(--gold)}
   .pf{width:100%;max-width:760px;margin:0 auto;padding:36px 48px 40px}
   .pf h2{font-size:40px}
 }
+
+/* Menu de la conversation */
+.chat-head{position:relative}
+.ch-i{flex:1;min-width:0}
+.menu{position:absolute;right:16px;top:calc(100% - 6px);width:min(320px,calc(100% - 32px));background:var(--surface);border:1px solid var(--gold);border-radius:8px;padding:6px;z-index:15;box-shadow:0 22px 40px -16px rgba(0,0,0,.65)}
+.menu[hidden]{display:none}
+.menu button{display:block;width:100%;text-align:left;background:none;border:0;padding:11px 12px;border-radius:6px;color:var(--ink)}
+.menu button b{display:block;font-weight:500;font-size:15px}
+.menu button small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px;line-height:1.35}
+.menu button[disabled]{opacity:.55;cursor:not-allowed}
+.menu .danger b{color:var(--err)}
+.menu hr{border:0;border-top:1px solid var(--gold-line);margin:4px 8px}
+@media (hover:hover){.menu button:not([disabled]):hover{background:var(--bg)}}
+.statusbar{margin:12px 20px 0;padding:10px 12px;border:1px solid var(--err);border-radius:6px;font-size:13px;line-height:1.4;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.statusbar .link{flex:none;font-size:14px}
+.b.sys{align-self:center;max-width:90%;background:none;border:0;color:var(--muted);font-family:var(--serif);font-style:italic;font-size:17px;text-align:center;padding:2px 8px}
+.composer input:disabled{opacity:.6}
+.ib[disabled]{opacity:.5;cursor:not-allowed}
+.modal.rep{text-align:left}
+.modal.rep h2{text-align:center}
+.reasons{border:0;margin:0 0 4px;padding:0}
+.modal .err{color:var(--err);margin:8px 0 12px;min-height:1em}
+
+/* Notification */
+.notif{position:absolute;left:12px;right:12px;top:12px;z-index:40;background:var(--surface);border:1px solid var(--gold);border-radius:14px;padding:10px 14px 12px;box-shadow:0 16px 32px -14px rgba(0,0,0,.7);transform:translateY(-140%);opacity:0;pointer-events:none;transition:transform .35s ease,opacity .35s ease;max-width:420px;margin:0 auto}
+.notif.on{transform:none;opacity:1}
+.notif small{display:block;color:var(--muted);font-size:12px;margin-bottom:6px}
+.notif .nr{display:flex;gap:12px;align-items:center}
+.notif .ni{flex:none;width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:var(--cta-grad,var(--cta-bg));color:var(--cta-ink);font-size:20px}
+.notif b{display:block;font-weight:500}
+.notif span span,.notif .nr div span{display:block;color:var(--muted);font-size:14px}
 </style>
 </head>
 <body>
@@ -409,6 +440,7 @@ input[type=range]{width:100%;accent-color:var(--gold)}
 
   <div class="overlay" id="overlay" hidden role="dialog" aria-modal="true"></div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="notif" id="notif" aria-live="polite"></div>
 </div>
 
 <script>
@@ -633,12 +665,16 @@ function updateResults(){
 
 /* Messages */
 let photo='pending';
+const chatState={blocked:false,paused:false,muted:false,nudgeAt:0};
 const msgs=[
   {w:'in',t:'Bonsoir Élise. Merci d’avoir accepté l’invitation.'},
   {w:'out',t:'Bonsoir. J’ai lu votre profil avec attention.'},
   {w:'in',t:'Je préfère qu’on se connaisse un peu avant. Puis-je vous envoyer une photo ?'}
 ];
 const HOST=P[0];
+const COOLDOWN=3600000;
+const myName=()=>me.n.replace(/[<>&"']/g,'').trim()||'Élise';
+const sysMsg=t=>msgs.push({w:'sys',t:t});
 
 function photoBlock(){
   if(photo==='pending')return `<div class="photo">
@@ -647,28 +683,67 @@ function photoBlock(){
     <div class="row"><button class="btn ghost" data-a="refuse">Refuser</button><button class="btn" data-a="accept">Accepter</button></div></div>`;
   if(photo==='accepted')return `<div class="photo">
     <div class="thumb clear"><span class="pi" style="--h:${HOST.h};filter:none;inset:0"></span></div>
-    <p>Photo reçue avec votre accord.</p>
-    <button class="link" data-a="block">Bloquer ce contact</button></div>`;
-  if(photo==='blocked')return `<div class="photo"><p class="muted" style="margin:0">Contact bloqué. Plus aucun message ni photo ne vous parviendra.</p></div>`;
+    <p style="margin-bottom:0">Photo reçue avec votre accord.</p></div>`;
   return `<div class="photo"><p class="muted" style="margin:0">Photo refusée et supprimée.</p></div>`;
 }
 
+function closeMenu(){
+  const mn=$('#chat-menu'),mb=$('#menu-btn');
+  if(mn&&!mn.hidden){mn.hidden=true;if(mb)mb.setAttribute('aria-expanded','false')}
+}
+function openMenu(){
+  const mn=$('#chat-menu'),mb=$('#menu-btn');
+  mn.hidden=false;mb.setAttribute('aria-expanded','true');
+  const f=mn.querySelector('button:not([disabled])');if(f)f.focus();
+}
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#chat-menu')&&!e.target.closest('#menu-btn'))closeMenu();
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){const mn=$('#chat-menu');if(mn&&!mn.hidden){closeMenu();const mb=$('#menu-btn');if(mb)mb.focus()}}
+});
+
+let notifT;
+function notify(label,title,body){
+  const n=$('#notif');
+  n.innerHTML=`<small>${esc(label)}</small><div class="nr"><span class="ni" aria-hidden="true">⚜</span><div><b>${esc(title)}</b><span>${esc(body)}</span></div></div>`;
+  n.classList.add('on');clearTimeout(notifT);
+  notifT=setTimeout(()=>n.classList.remove('on'),5500);
+}
+
 function renderMessages(keepDraft){
-  const v=$('#v-messages');
+  const v=$('#v-messages'),st=chatState,off=st.blocked||st.paused;
   const draft=keepDraft&&$('#msg')?$('#msg').value:'';
+  const cool=st.nudgeAt>0&&Date.now()-st.nudgeAt<COOLDOWN;
+  const items=st.blocked
+    ?`<button role="menuitem" data-m="unblock"><b>Débloquer ce contact</b><small>Vous pourrez de nouveau échanger.</small></button>`
+    :`<button role="menuitem" data-m="nudge"${cool?' disabled':''}><b>Fesser pour le faire réagir</b><small>${cool?'Envoyée. Nouvelle possible dans 1 h.':'Il reçoit une notification. Une fois par heure.'}</small></button>
+      <button role="menuitem" data-m="pause"><b>${st.paused?'Reprendre la conversation':'Safeword : mettre en pause'}</b><small>${st.paused?'Vous pourrez de nouveau écrire.':'Plus personne n’écrit. Vous seul la reprenez.'}</small></button>
+      <button role="menuitem" data-m="mute"><b>${st.muted?'Réactiver les notifications':'Couper les notifications'}</b><small>Pour ce contact seulement.</small></button>
+      <hr>
+      <button role="menuitem" data-m="report"><b>Signaler</b><small>Prévient la modération.</small></button>
+      <button role="menuitem" data-m="block" class="danger"><b>Bloquer ce contact</b><small>Plus aucun message ni aucune photo.</small></button>`;
+  const bar=st.blocked
+    ?`<div class="statusbar"><span>Vous avez bloqué ${HOST.n}. Plus aucun message ni aucune photo ne vous parviendra.</span><button class="link" data-m="unblock">Débloquer</button></div>`
+    :st.paused?`<div class="statusbar"><span>Conversation en pause. Plus personne ne peut écrire.</span><button class="link" data-m="pause">Reprendre</button></div>`:'';
   v.innerHTML=`
-    <div class="chat-head">${portrait(HOST,52,true)}<div><b>${HOST.n}</b><small>Dominant, accord mutuel</small></div></div>
+    <div class="chat-head">${portrait(HOST,52,true)}
+      <div class="ch-i"><b>${HOST.n}</b><small>Dominant, accord mutuel${st.muted?', notifications coupées':''}</small></div>
+      <button class="ib" id="menu-btn" aria-label="Options de la conversation" aria-haspopup="menu" aria-expanded="false" aria-controls="chat-menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <div class="menu" id="chat-menu" role="menu" hidden>${items}</div>
+    </div>
     <div class="notice">${LOCK}<span>Aucune photo n’arrive sans votre accord. Elles restent floutées tant que vous n’avez pas choisi.</span></div>
+    ${bar}
     <div class="chat" id="chat">
       ${msgs.map(m=>`<div class="b ${m.w}">${m.t}</div>`).join('')}
-      ${photoBlock()}
+      ${st.blocked?'':photoBlock()}
     </div>
     <div class="composer">
-      <button class="ib" id="ph" aria-label="Demander l’envoi d’une photo">
+      <button class="ib" id="ph" aria-label="Demander l’envoi d’une photo"${off?' disabled':''}>
         <svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="13" rx="2"/><circle cx="12" cy="12.5" r="3.2"/><path d="M8.5 6l1.2-2h4.6l1.2 2"/></svg>
       </button>
-      <input id="msg" type="text" placeholder="Écrire un message" aria-label="Message" value="${draft.replace(/"/g,'&quot;')}">
-      <button class="ib go" id="send" aria-label="Envoyer">
+      <input id="msg" type="text" placeholder="${st.blocked?'Contact bloqué':st.paused?'Conversation en pause':'Écrire un message'}" aria-label="Message" value="${draft.replace(/"/g,'&quot;')}"${off?' disabled':''}>
+      <button class="ib go" id="send" aria-label="Envoyer"${off?' disabled':''}>
         <svg viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-3-7z"/></svg>
       </button>
     </div>`;
@@ -677,11 +752,13 @@ function renderMessages(keepDraft){
     const a=b.dataset.a;
     if(a==='accept')photo='accepted';
     if(a==='refuse')photo='refused';
-    if(a==='block'){photo='blocked';toast('Contact bloqué.')}
     renderMessages(true);
   }));
+  $('#menu-btn').addEventListener('click',()=>{$('#chat-menu').hidden?openMenu():closeMenu()});
+  $$('#v-messages [data-m]').forEach(b=>b.addEventListener('click',()=>{closeMenu();menuAction(b.dataset.m)}));
   $('#ph').onclick=()=>toast('Une demande d’accord est envoyée à la destinataire avant toute photo.');
   const send=()=>{
+    if(off)return;
     const i=$('#msg'),t=i.value.trim();
     if(!t)return;
     msgs.push({w:'out',t:t.replace(/[<>&]/g,ch=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[ch]))});
@@ -691,6 +768,68 @@ function renderMessages(keepDraft){
   $('#msg').addEventListener('keydown',e=>{if(e.key==='Enter')send()});
 }
 
+function menuAction(a){
+  const st=chatState;
+  if(a==='nudge'){
+    if(st.nudgeAt>0&&Date.now()-st.nudgeAt<COOLDOWN)return;
+    st.nudgeAt=Date.now();
+    sysMsg('Vous avez fessé '+HOST.n+'. Il en est notifié.');
+    renderMessages(true);
+    notify('Ce que '+HOST.n+' reçoit',myName()+' vous a fessé','Touchez pour réagir.');
+  }
+  if(a==='pause'){
+    st.paused=!st.paused;
+    sysMsg(st.paused?'Safeword : la conversation est en pause.':'La conversation reprend.');
+    renderMessages(true);
+  }
+  if(a==='mute'){
+    st.muted=!st.muted;
+    toast(st.muted?'Notifications coupées pour '+HOST.n+'.':'Notifications réactivées pour '+HOST.n+'.');
+    renderMessages(true);
+  }
+  if(a==='report')openReport();
+  if(a==='block')openBlock();
+  if(a==='unblock'){
+    st.blocked=false;
+    sysMsg('Vous avez débloqué '+HOST.n+'.');
+    renderMessages(true);toast(HOST.n+' est débloqué.');
+  }
+}
+
+function doBlock(){
+  chatState.blocked=true;chatState.paused=false;
+  sysMsg('Vous avez bloqué '+HOST.n+'.');
+  renderMessages(false);
+}
+
+function openBlock(){
+  const o=$('#overlay');o.hidden=false;
+  o.innerHTML=`<div class="modal"><h2>Bloquer ${HOST.n} ?</h2><p>Plus aucun message ni aucune photo ne vous parviendra. Vous pourrez le débloquer depuis ce menu.</p><div class="row"><button class="btn ghost" id="b-no">Annuler</button><button class="btn" id="b-yes">Bloquer</button></div></div>`;
+  $('#b-no').onclick=()=>{o.hidden=true};
+  $('#b-yes').onclick=()=>{o.hidden=true;doBlock();toast(HOST.n+' est bloqué.')};
+  $('#b-no').focus();
+}
+
+function openReport(){
+  const o=$('#overlay');o.hidden=false;
+  const reasons=['Pression ou insistance','Photo non demandée','Faux profil','Propos non consentis ou menaçants','Autre motif'];
+  o.innerHTML=`<div class="modal rep"><h2>Signaler ${HOST.n}</h2>
+    <fieldset class="reasons"><legend class="vh">Motif du signalement</legend>
+      ${reasons.map((r,i)=>`<label class="chk"><input type="radio" name="reason" value="${i}"><span>${r}</span></label>`).join('')}
+    </fieldset>
+    <label class="chk"><input type="checkbox" id="r-block"><span>Bloquer aussi ce contact</span></label>
+    <p class="err" id="r-err" role="alert"></p>
+    <div class="row"><button class="btn ghost" id="r-no">Annuler</button><button class="btn" id="r-yes">Envoyer</button></div></div>`;
+  $('#r-no').onclick=()=>{o.hidden=true};
+  $('#r-yes').onclick=()=>{
+    if(!document.querySelector('input[name="reason"]:checked')){$('#r-err').textContent='Choisissez un motif.';return}
+    const b=$('#r-block').checked;
+    o.hidden=true;
+    if(b)doBlock();
+    toast('Signalement enregistré (démonstration).');
+  };
+  const f=o.querySelector('input[type="radio"]');if(f)f.focus();
+}
 
 /* Photos privées des autres membres */
 const access={};P.forEach(p=>access[p.n]=p.acc);
