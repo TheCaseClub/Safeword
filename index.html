@@ -215,10 +215,97 @@ input[type=range]{width:100%;accent-color:var(--gold)}
 
   .toast{bottom:40px}
 }
+
+/* Page d'accueil */
+.app[hidden],.landing[hidden]{display:none!important}
+.landing{height:100%;overflow-y:auto;background:var(--bg);color:var(--ink)}
+@media (prefers-reduced-motion:no-preference){.landing{scroll-behavior:smooth}}
+.l-wrap{max-width:720px;margin:0 auto;padding:0 24px}
+.l-hero{min-height:88vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 0}
+.l-brand{font-family:var(--serif);font-weight:600;font-size:clamp(46px,13vw,76px);line-height:1.05;margin:0;letter-spacing:.14em;padding-left:.14em;color:var(--gold);background:var(--brand-grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;display:inline-block}
+.l-hero .rule{margin-top:14px}
+.l-title{font-family:var(--serif);font-weight:500;font-style:italic;font-size:clamp(28px,6.4vw,40px);line-height:1.2;margin:44px 0 0;max-width:20ch}
+.l-lead{margin:20px 0 0;max-width:46ch;color:var(--muted);font-size:17px;line-height:1.6}
+.l-cta{display:inline-block;margin-top:40px;text-decoration:none;padding:14px 32px}
+.l-sec{padding:56px 0 8px}
+.l-sec h2{font-family:var(--serif);font-weight:600;font-size:clamp(32px,7vw,42px);line-height:1.1;margin:0 0 16px}
+.l-p{margin:0 0 8px;font-size:17px;line-height:1.65;max-width:60ch}
+.l-list{margin-top:28px}
+.l-list>div{padding:22px 0;border-top:1px solid var(--gold-line)}
+.l-list>div:last-child{border-bottom:1px solid var(--gold-line)}
+.l-list h3{font-family:var(--serif);font-weight:600;font-size:25px;line-height:1.15;margin:0 0 8px;color:var(--gold)}
+.l-list p{margin:0;color:var(--muted);line-height:1.6;max-width:56ch}
+.l-rules{list-style:none;margin:24px 0 0;padding:0}
+.l-rules li{position:relative;padding:14px 0 14px 30px;border-top:1px solid var(--gold-line);line-height:1.6}
+.l-rules li:last-child{border-bottom:1px solid var(--gold-line)}
+.l-rules li::before{content:"";position:absolute;left:4px;top:23px;width:7px;height:7px;transform:rotate(45deg);border:1px solid var(--gold);background:var(--gold)}
+.l-note{margin:18px 0 0;font-family:var(--serif);font-style:italic;font-size:19px;color:var(--muted)}
+.l-gate-sec{padding:56px 0 32px}
+.gate{position:relative;background:var(--surface);border:1px solid var(--gold);border-radius:8px;padding:32px 26px 28px}
+.gate::after{content:"";position:absolute;inset:6px;border:1px solid var(--gold-line);border-radius:4px;pointer-events:none}
+.gate h2{margin-bottom:10px}
+.chk{display:flex;gap:14px;align-items:flex-start;padding:12px 0;cursor:pointer;line-height:1.5}
+.chk input{flex:none;width:24px;height:24px;margin:0;accent-color:var(--gold);cursor:pointer}
+.l-enter{display:block;width:100%;margin-top:18px;padding:15px 24px;font-size:16px}
+.l-enter[disabled]{background:transparent;color:var(--muted);border-color:var(--gold-line);background-image:none;cursor:not-allowed}
+.l-hint{margin:12px 0 0;text-align:center;font-size:13px;color:var(--muted)}
+.l-foot{padding:24px 0 calc(32px + env(safe-area-inset-bottom,0px));text-align:center;font-size:13px;color:var(--muted)}
+@media (hover:hover){.l-cta:hover{filter:brightness(1.1)}}
 </style>
 </head>
 <body>
-<div class="app">
+<main class="landing" id="landing" aria-label="Accueil">
+  <div class="l-wrap">
+    <section class="l-hero">
+      <h1 class="l-brand">Safeword</h1>
+      <div class="rule" aria-hidden="true"><i></i><b></b><i></i></div>
+      <p class="l-title">Chaque dynamique commence par un consentement.</p>
+      <p class="l-lead">La plateforme de rencontre des Dominants et des soumises, pensée pour la confiance, la discrétion et la sécurité des femmes.</p>
+      <a class="btn l-cta" href="#concept">Découvrir Safeword</a>
+    </section>
+
+    <section class="l-sec" id="concept">
+      <h2>Le concept</h2>
+      <p class="l-p">Safeword réunit des Dominants et des soumises qui cherchent un ou plusieurs partenaires, dans un cadre où le consentement n’est jamais une option.</p>
+      <div class="l-list">
+        <div><h3>Le profil avant la photo</h3><p>Votre rôle, ce que vous recherchez, vos pratiques et vos limites passent en premier. Le portrait reste flou jusqu’à l’accord mutuel.</p></div>
+        <div><h3>Deux façons de se trouver</h3><p>Faites défiler les profils d’un geste, ou lancez une recherche précise par rôle, type de relation et distance.</p></div>
+        <div><h3>Des photos uniquement sur accord</h3><p>Aucune image n’arrive sans l’accord de la destinataire. Elle la reçoit floutée et choisit de l’accepter ou de la refuser.</p></div>
+        <div><h3>Gratuit</h3><p>L’application est gratuite pour rencontrer, rechercher et écrire.</p></div>
+      </div>
+    </section>
+
+    <section class="l-sec" id="regles">
+      <h2>Les règles de la maison</h2>
+      <p class="l-p">Elles s’appliquent à tous, sans exception.</p>
+      <ul class="l-rules">
+        <li>Le consentement passe avant tout. Un non, un silence ou une hésitation valent un refus, à tout moment.</li>
+        <li>Les limites affichées sur un profil sont respectées. Aucune insistance, aucune négociation.</li>
+        <li>Aucune photo n’est envoyée sans l’accord de la destinataire.</li>
+        <li>Ce qui se dit ici reste ici : pas de capture d’écran, de partage ni de divulgation d’un profil ou d’une conversation.</li>
+        <li>Vous avez 18 ans ou plus et un seul profil, honnête. Les faux profils sont exclus.</li>
+        <li>Le harcèlement, la pression et les comportements agressifs entraînent une exclusion immédiate.</li>
+      </ul>
+      <p class="l-note">Conseil : pour une première rencontre, choisissez un lieu public et prévenez un proche.</p>
+    </section>
+
+    <section class="l-sec l-gate-sec" id="entrer">
+      <div class="gate">
+        <h2>Avant d’entrer</h2>
+        <p class="l-p">Validez les trois points pour accéder à Safeword.</p>
+        <label class="chk"><input type="checkbox"><span>J’ai 18 ans ou plus.</span></label>
+        <label class="chk"><input type="checkbox"><span>J’ai lu les règles de la maison et je les accepte.</span></label>
+        <label class="chk"><input type="checkbox"><span>Je comprends qu’un manquement au consentement entraîne mon exclusion.</span></label>
+        <button class="btn l-enter" id="enter" disabled>Entrer</button>
+        <p class="l-hint" id="gate-hint" role="status">Cochez les trois cases pour entrer.</p>
+      </div>
+    </section>
+
+    <footer class="l-foot">Maquette de démonstration. Les profils et les photos sont fictifs.</footer>
+  </div>
+</main>
+
+<div class="app" hidden>
   <header class="top">
     <h1 class="brand">Safeword</h1>
     <div class="rule" aria-hidden="true"><i></i><b></b><i></i></div>
@@ -400,7 +487,7 @@ function decide(dir){
 $('#btn-yes').addEventListener('click',()=>decide('yes'));
 $('#btn-pass').addEventListener('click',()=>decide('no'));
 document.addEventListener('keydown',e=>{
-  if(tab!=='discover'||!$('#overlay').hidden)return;
+  if(tab!=='discover'||!$('#overlay').hidden||document.querySelector('.app').hidden)return;
   if(e.key==='ArrowRight')decide('yes');
   if(e.key==='ArrowLeft')decide('no');
 });
@@ -534,6 +621,25 @@ function renderMessages(keepDraft){
 renderDeck();
 renderSearch();
 renderMessages(false);
+
+/* Porte d'entrée */
+const LAND=$('#landing'),APPEL=document.querySelector('.app');
+function enterApp(){LAND.hidden=true;APPEL.hidden=false;window.scrollTo(0,0)}
+let passed=false;
+try{passed=sessionStorage.getItem('safeword-ok')==='1'}catch(e){}
+if(passed)enterApp();
+const checks=$$('.gate input'),enterBtn=$('#enter');
+checks.forEach(c=>c.addEventListener('change',()=>{
+  const all=checks.every(x=>x.checked);
+  enterBtn.disabled=!all;
+  $('#gate-hint').textContent=all?'Merci. Vous pouvez entrer.':'Cochez les trois cases pour entrer.';
+}));
+enterBtn.addEventListener('click',()=>{
+  if(!checks.every(x=>x.checked))return;
+  try{sessionStorage.setItem('safeword-ok','1')}catch(e){}
+  enterApp();
+});
+
 </script>
 </body>
 </html>
