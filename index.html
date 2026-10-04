@@ -345,6 +345,24 @@ input[type=range]{width:100%;accent-color:var(--gold)}
 .notif .ni{flex:none;width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:var(--cta-grad,var(--cta-bg));color:var(--cta-ink);font-size:20px}
 .notif b{display:block;font-weight:500}
 .notif span span,.notif .nr div span{display:block;color:var(--muted);font-size:14px}
+
+/* Présence en ligne */
+.pres{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.pres i,.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--muted);opacity:.55;flex:none}
+.pres.on{color:var(--ink)}
+.pres.on i,.dot{background:#3DBE7A;opacity:1;box-shadow:0 0 0 3px rgba(61,190,122,.22)}
+.chat-head small .pres{margin:0 4px 0 2px}
+.onstrip{flex:none;display:flex;align-items:center;gap:12px;padding:2px 20px 10px}
+.onstrip[hidden]{display:none}
+.os-l{display:inline-flex;gap:8px;align-items:center;font-family:var(--serif);font-style:italic;font-weight:600;font-size:18px;color:var(--gold)}
+.os-av{display:flex;padding-left:8px}
+.osa{position:relative;margin-left:-8px;display:inline-block}
+.osa .portrait{border-width:2px;border-color:var(--bg)}
+.osa .dot{position:absolute;right:-1px;bottom:-1px;width:12px;height:12px;border:2px solid var(--bg);box-shadow:none}
+.onstrip .link{margin-left:auto;font-size:14px}
+@media (min-width:900px){
+  .onstrip{width:100%;max-width:540px;margin:20px auto 0;padding:0 18px}
+}
 </style>
 </head>
 <body>
@@ -407,6 +425,7 @@ input[type=range]{width:100%;accent-color:var(--gold)}
 
   <main>
     <section class="view" id="v-discover" aria-label="Découvrir">
+      <div class="onstrip" id="onstrip" hidden></div>
       <div class="deck" id="deck"></div>
       <div class="actions" id="actions">
         <button class="btn ghost wide" id="btn-pass">Passer</button>
@@ -479,7 +498,46 @@ const P=[
 ];
 
 const PRIV={'Marc-Antoine':[3,'locked'],'Élise':[2,'locked'],'Victor':[0,'locked'],'Camille':[4,'granted'],'Sébastien':[2,'locked']};
+
 P.forEach(p=>{p.priv=PRIV[p.n][0];p.acc=PRIV[p.n][1]});
+
+/* Villes (coordonnées approximatives) et distances à vol d'oiseau */
+const CITIES=[['Paris',48.8566,2.3522],['Marseille',43.2965,5.3698],['Lyon',45.7640,4.8357],['Toulouse',43.6047,1.4442],['Nice',43.7102,7.2620],['Nantes',47.2184,-1.5536],['Montpellier',43.6108,3.8767],['Strasbourg',48.5734,7.7521],['Bordeaux',44.8378,-0.5792],['Lille',50.6292,3.0573],['Rennes',48.1173,-1.6778],['Reims',49.2583,4.0317],['Le Havre',49.4944,0.1079],['Saint-Étienne',45.4397,4.3872],['Toulon',43.1242,5.9280],['Grenoble',45.1885,5.7245],['Dijon',47.3220,5.0415],['Angers',47.4784,-0.5632],['Nîmes',43.8367,4.3601],['Clermont-Ferrand',45.7772,3.0870],['Le Mans',48.0061,0.1996],['Aix-en-Provence',43.5297,5.4474],['Brest',48.3904,-4.4861],['Tours',47.3941,0.6848],['Amiens',49.8941,2.2958],['Limoges',45.8336,1.2611],['Annecy',45.8992,6.1294],['Perpignan',42.6887,2.8948],['Metz',49.1193,6.1757],['Besançon',47.2378,6.0241],['Orléans',47.9029,1.9093],['Rouen',49.4432,1.0993],['Mulhouse',47.7508,7.3359],['Caen',49.1829,-0.3707],['Nancy',48.6921,6.1844],['Avignon',43.9493,4.8055],['Poitiers',46.5802,0.3404],['Pau',43.2951,-0.3708],['La Rochelle',46.1603,-1.1511],['Calais',50.9513,1.8587],['Dunkerque',51.0343,2.3768],['Cannes',43.5528,7.0174],['Colmar',48.0794,7.3585],['Troyes',48.2973,4.0744],['Lorient',47.7482,-3.3702],['Quimper',47.9960,-4.1024],['Vannes',47.6582,-2.7608],['Saint-Malo',48.6493,-2.0257],['Valence',44.9334,4.8924],['Chambéry',45.5646,5.9178],['Bayonne',43.4929,-1.4748],['Ajaccio',41.9192,8.7386],['Bastia',42.6977,9.4509],['Montbéliard',47.5100,6.7980],['Belfort',47.6397,6.8630],['Vesoul',47.6197,6.1550],['Baume-les-Dames',47.3500,6.3600],['Pontarlier',46.9040,6.3550],['Lons-le-Saunier',46.6754,5.5530],['Dole',47.0920,5.4900],['Chalon-sur-Saône',46.7807,4.8530],['Mâcon',46.3069,4.8280],['Beaune',47.0260,4.8400],['Auxerre',47.7980,3.5730],['Nevers',46.9900,3.1590],['Bourges',47.0810,2.3980],['Chartres',48.4469,1.4890],['Laval',48.0700,-0.7700],['Cherbourg',49.6337,-1.6221],['Saint-Brieuc',48.5136,-2.7603],['Niort',46.3237,-0.4588],['Angoulême',45.6484,0.1560],['Périgueux',45.1840,0.7210],['Brive-la-Gaillarde',45.1590,1.5320],['Agen',44.2030,0.6160],['Montauban',44.0180,1.3550],['Carcassonne',43.2130,2.3490],['Béziers',43.3440,3.2150],['Albi',43.9290,2.1480],['Gap',44.5594,6.0786],['Épinal',48.1724,6.4503],['Charleville-Mézières',49.7620,4.7230],['Saint-Quentin',49.8480,3.2870],['Beauvais',49.4300,2.0830],['Versailles',48.8014,2.1301],['Boulogne-Billancourt',48.8397,2.2399],['Saint-Denis',48.9362,2.3574]];
+const normC=t=>String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').replace(/\bsaint\b/g,'st').trim();
+const CITY_MAP=new Map(CITIES.map(c=>[normC(c[0]),{name:c[0],lat:c[1],lon:c[2]}]));
+const CITY_NAMES=CITIES.map(c=>c[0]).sort((a,b)=>a.localeCompare(b,'fr'));
+const cityLookup=t=>CITY_MAP.get(normC(t))||null;
+function kmBetween(a,b){
+  const R=6371,r=Math.PI/180,dLa=(b.lat-a.lat)*r,dLo=(b.lon-a.lon)*r;
+  const h=Math.sin(dLa/2)**2+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.sin(dLo/2)**2;
+  return 2*R*Math.asin(Math.sqrt(h));
+}
+let origin={name:'Besançon',set:false};
+function recalcDistances(){
+  const o=cityLookup(origin.name);
+  P.forEach(p=>{
+    if(p.mine){p.d=0;return}
+    const g=cityLookup(p.c);
+    p.d=(o&&g)?Math.round(kmBetween(o,g)):null;
+  });
+}
+recalcDistances();
+function distLabel(p){
+  if(p.mine||p.pv||p.d==null)return '';
+  return p.d<3?', dans la même ville':', à '+p.d+' km';
+}
+
+/* Présence en ligne */
+const PRES={'Marc-Antoine':[true,0],'Élise':[false,12],'Victor':[true,0],'Camille':[false,130],'Sébastien':[false,1500]};
+P.forEach(p=>{p.online=PRES[p.n][0];p.seen=PRES[p.n][1]});
+function presText(p){
+  if(p.online)return 'En ligne';
+  if(p.mine||p.pv)return 'Statut masqué';
+  const m=p.seen||1;
+  return m<60?'Vu il y a '+m+' min':m<1440?'Vu il y a '+Math.round(m/60)+' h':'Vu hier';
+}
+function presHTML(p){return `<span class="pres${p.online?' on':''}" data-pres="${p.n}"><i></i>${presText(p)}</span>`}
+
 
 const $=s=>document.querySelector(s);
 const $$=s=>[...document.querySelectorAll(s)];
@@ -503,6 +561,7 @@ function show(t){
   ['discover','search','messages','profile'].forEach(k=>{$('#v-'+k).hidden=(k!==t)});
   $$('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));
   if(t==='messages'){const c=$('#chat');if(c)c.scrollTop=c.scrollHeight}
+  if(t==='search'&&typeof updateResults==='function')updateResults();
 }
 $$('.tab').forEach(b=>b.addEventListener('click',()=>show(b.dataset.tab)));
 
@@ -515,7 +574,7 @@ function card(p){
     <div class="card-in">
       <div class="who">${portrait(p,72,true)}
         <div><h2>${p.n}</h2>
-          <p class="meta"><span>${p.a} ans, ${p.c}</span>${p.v?`<span class="ver">${CHECK}Vérifié${p.f?'e':''}</span>`:''}${p.mine?'<span class="ver">Votre profil</span>':''}</p>
+          <p class="meta"><span>${p.a} ans, ${p.c}${distLabel(p)}</span>${p.v?`<span class="ver">${CHECK}Vérifié${p.f?'e':''}</span>`:''}${p.mine?'<span class="ver">Votre profil</span>':''}${presHTML(p)}</p>
         </div>
       </div>
       <span class="seal">${p.r}</span>
@@ -612,7 +671,7 @@ function showMatch(p){
 }
 
 /* Recherche */
-const F={roles:new Set(),rel:new Set(),dist:200,verified:false};
+const F={roles:new Set(),rel:new Set(),dist:1000,verified:false,online:false};
 const sent=new Set();
 
 function renderSearch(){
@@ -623,10 +682,13 @@ function renderSearch(){
     <div class="group"><span>Rôle</span><div class="chips">${ROLES.map(r=>`<button class="chip" data-k="roles" data-v="${r}" aria-pressed="false">${r}</button>`).join('')}</div></div>
     <div class="group"><span>Relation recherchée</span><div class="chips">${Object.entries(REL).map(([k,l])=>`<button class="chip" data-k="rel" data-v="${k}" aria-pressed="false">${l}</button>`).join('')}</div></div>
     <div class="group"><span>Distance</span>
-      <input type="range" id="dist" min="10" max="200" step="10" value="200" aria-label="Distance maximale">
-      <div class="muted" id="dist-l">Jusqu’à 200 km</div></div>
+      <input type="range" id="dist" min="10" max="1000" step="10" value="1000" aria-label="Distance maximale">
+      <div class="muted" id="dist-l">Partout en France</div>
+      <div class="muted" id="dist-n" style="font-size:13px;margin-top:4px"></div></div>
     <div class="group"><div class="rowline"><div><span style="margin:0">Profils vérifiés</span><div class="muted" style="font-size:13px;margin-top:2px">Identité confirmée par l’équipe</div></div>
       <button class="sw" id="ver" role="switch" aria-checked="false" aria-label="Profils vérifiés seulement"></button></div></div>
+    <div class="group"><div class="rowline"><div><span style="margin:0">En ligne maintenant</span><div class="muted" style="font-size:13px;margin-top:2px" id="onl-c"></div></div>
+      <button class="sw" id="onl" role="switch" aria-checked="false" aria-label="Membres en ligne seulement"></button></div></div>
     </div>
     <div class="res"><div class="count" id="count"></div>
     <div id="results"></div></div></div>
@@ -637,9 +699,12 @@ function renderSearch(){
     else{set.add(val);b.setAttribute('aria-pressed','true')}
     updateResults();
   }));
-  $('#dist').addEventListener('input',e=>{F.dist=+e.target.value;$('#dist-l').textContent='Jusqu’à '+F.dist+' km';updateResults()});
+  $('#dist').addEventListener('input',e=>{F.dist=+e.target.value;$('#dist-l').textContent=F.dist>=1000?'Partout en France':'Jusqu’à '+F.dist+' km';updateResults()});
   $('#ver').addEventListener('click',e=>{
     F.verified=!F.verified;e.currentTarget.setAttribute('aria-checked',F.verified);updateResults();
+  });
+  $('#onl').addEventListener('click',e=>{
+    F.online=!F.online;e.currentTarget.setAttribute('aria-checked',F.online);updateResults();
   });
   updateResults();
 }
@@ -648,12 +713,14 @@ function updateResults(){
   const list=P.filter(p=>
     (!F.roles.size||F.roles.has(p.r))&&
     (!F.rel.size||p.rel.some(x=>F.rel.has(x)))&&
-    p.d<=F.dist&&(!F.verified||p.v)
-  ).sort((a,b)=>a.d-b.d);
+    (p.d==null||p.d<=F.dist)&&(!F.verified||p.v)&&(!F.online||p.online)
+  ).sort((a,b)=>(a.d==null?1e9:a.d)-(b.d==null?1e9:b.d));
   $('#count').textContent=list.length+(list.length>1?' profils':' profil');
+  $('#dist-n').textContent=origin.set?'Distances à vol d’oiseau depuis '+origin.name+'.':'Distances à vol d’oiseau depuis '+origin.name+' (exemple). Indiquez votre ville dans Mon profil.';
+  updateOnlineCount();
   $('#results').innerHTML=list.length?list.map(p=>`
     <div class="result">${portrait(p,52,true)}
-      <div class="info"><b>${p.n}, ${p.a}</b><small>${p.r}, ${p.c}, à ${p.d} km${p.v?', vérifié'+(p.f?'e':''):''}</small></div>
+      <div class="info"><b>${p.n}, ${p.a}</b><small>${p.r}, ${p.c}${distLabel(p)}${p.v?', vérifié'+(p.f?'e':''):''}</small><small>${presHTML(p)}</small></div>
       ${p.mine?'<span class="muted">Votre profil</span>':`<button class="btn" data-n="${p.n}" ${sent.has(p.n)?'disabled':''}>${sent.has(p.n)?'Envoyée':'Inviter'}</button>`}
     </div>`).join('')
     :`<p class="none">Aucun profil ne correspond. Élargissez la distance ou retirez un filtre.</p>`;
@@ -728,7 +795,7 @@ function renderMessages(keepDraft){
     :st.paused?`<div class="statusbar"><span>Conversation en pause. Plus personne ne peut écrire.</span><button class="link" data-m="pause">Reprendre</button></div>`:'';
   v.innerHTML=`
     <div class="chat-head">${portrait(HOST,52,true)}
-      <div class="ch-i"><b>${HOST.n}</b><small>Dominant, accord mutuel${st.muted?', notifications coupées':''}</small></div>
+      <div class="ch-i"><b>${HOST.n}</b><small>Dominant, accord mutuel ${presHTML(HOST)}${st.muted?', notifications coupées':''}</small></div>
       <button class="ib" id="menu-btn" aria-label="Options de la conversation" aria-haspopup="menu" aria-expanded="false" aria-controls="chat-menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
       <div class="menu" id="chat-menu" role="menu" hidden>${items}</div>
     </div>
@@ -854,7 +921,7 @@ $('#deck').addEventListener('click',e=>{
 
 /* Mon profil */
 const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const me={n:'',a:'',c:'',r:'',q:'',seek:'',rel:new Set(),dyn:[],lim:[],pub:[],prv:[]};
+const me={n:'',a:'',c:'',r:'',q:'',seek:'',rel:new Set(),dyn:[],lim:[],pub:[],prv:[],showOnline:true};
 const own={requests:['Marc-Antoine','Victor'],granted:[]};
 const CONTACTS=['Élise','Camille','Sébastien'];
 const SUG={
@@ -871,7 +938,7 @@ function renderProfile(){
       <div class="field"><label for="f-n">Pseudo</label><input id="f-n" maxlength="24" autocomplete="off"></div>
       <div class="two">
         <div class="field"><label for="f-a">Âge</label><input id="f-a" type="number" inputmode="numeric" min="18" max="99"></div>
-        <div class="field"><label for="f-c">Ville</label><input id="f-c" maxlength="40" autocomplete="off"></div>
+        <div class="field"><label for="f-c">Ville</label><input id="f-c" maxlength="40" autocomplete="off" list="cities"><datalist id="cities">${CITY_NAMES.map(c=>`<option value="${c}">`).join('')}</datalist></div>
       </div>
     </div>
     <div class="group"><span>Mon rôle</span><div class="chips" id="roles">${ROLES.map(r=>`<button class="chip" data-v="${r}" aria-pressed="false">${r}</button>`).join('')}</div></div>
@@ -890,6 +957,8 @@ function renderProfile(){
       <div class="chips" id="lim-s"></div>
       <div class="addrow"><input id="lim-i" maxlength="30" placeholder="Ajouter la vôtre" aria-label="Ajouter une limite"><button class="btn ghost small" id="lim-b">Ajouter</button></div>
     </div>
+    <div class="group"><div class="rowline"><div><span style="margin:0">Afficher quand je suis en ligne</span><div class="muted" style="font-size:13px;margin-top:2px">Les autres voient un point vert quand vous êtes connecté.</div></div>
+      <button class="sw" id="f-on" role="switch" aria-checked="true" aria-label="Afficher quand je suis en ligne"></button></div></div>
     <div class="group"><span>Mes photos</span>
       <p class="pf-note">Dans cette maquette, vos photos restent sur votre appareil et ne sont envoyées nulle part.</p>
       <div id="pf-photos"></div>
@@ -924,6 +993,10 @@ function renderProfile(){
     $('#'+k+'-i').addEventListener('keydown',e=>{if(e.key==='Enter')addTag(k)});
   });
   renderPhotos();renderAccess();
+  $('#f-on').addEventListener('click',e=>{
+    me.showOnline=!me.showOnline;e.currentTarget.setAttribute('aria-checked',me.showOnline);
+    const mm=P.find(x=>x.mine);if(mm){mm.online=me.showOnline;refreshPresence()}
+  });
   $('#pf-prev').addEventListener('click',showPreview);
   $('#pf-save').addEventListener('click',saveProfile);
 }
@@ -999,7 +1072,7 @@ function showPreview(){
     r:me.r||'Votre rôle',h:40,v:false,f:false,
     q:esc(me.q.trim()||'Votre phrase apparaîtra ici.'),
     seek:esc(me.seek.trim()||[...me.rel].map(k=>REL[k]).join(', ')||'À préciser.'),
-    dyn:tags(me.dyn),lim:tags(me.lim),img:me.pub[0],priv:me.prv.length,pv:true
+    dyn:tags(me.dyn),lim:tags(me.lim),img:me.pub[0],priv:me.prv.length,pv:true,online:me.showOnline
   };
   const o=$('#overlay');o.hidden=false;
   o.innerHTML=`<div class="pv-wrap"><p class="pv-t">Voici votre carte, telle que les autres la verront.</p><div class="pv">${card(p)}</div><div class="row"><button class="btn" id="pv-x">Fermer</button></div></div>`;
@@ -1012,31 +1085,70 @@ function saveProfile(){
   const name=me.n.replace(/[<>&"']/g,'').trim();
   if(!name)e.push('Choisissez un pseudo.');
   if(!(a>=18&&a<=99))e.push('Indiquez votre âge. Le minimum est 18 ans.');
+  const cityInfo=cityLookup(me.c);
   if(!me.c.trim())e.push('Indiquez votre ville.');
+  else if(!cityInfo)e.push('Ville non reconnue dans cette maquette. Choisissez-en une dans la liste proposée.');
   if(!me.r)e.push('Choisissez votre rôle.');
   const m=$('#pf-msg');
   if(e.length){m.className='err';m.innerHTML=e.join('<br>');m.scrollIntoView({block:'center'});return}
   const mine={
-    n:name,a:a,c:esc(me.c.trim()),d:0,r:me.r,h:40,v:false,f:me.r==='soumise',m:false,mine:true,pv:true,
+    n:name,a:a,c:esc(cityInfo.name),d:0,r:me.r,h:40,v:false,f:me.r==='soumise',m:false,mine:true,pv:true,
     q:esc(me.q.trim()||'Une présentation à écrire.'),
     seek:esc(me.seek.trim()||[...me.rel].map(k=>REL[k]).join(', ')||'À préciser.'),
     dyn:me.dyn.length?me.dyn.map(esc):['À renseigner'],
     lim:me.lim.length?me.lim.map(esc):['À renseigner'],
-    rel:[...me.rel],img:me.pub[0],priv:me.prv.length,acc:'locked'
+    rel:[...me.rel],img:me.pub[0],priv:me.prv.length,acc:'locked',online:me.showOnline,seen:0
   };
   const at=P.findIndex(x=>x.mine);
   if(at>=0)P.splice(at,1);
   P.unshift(mine);
-  idx=0;busy=false;renderDeck();updateResults();
+  origin={name:cityInfo.name,set:true};recalcDistances();
+  idx=0;busy=false;renderDeck();renderStrip();updateResults();
   m.className='okm';
-  m.textContent='Profil enregistré. Retrouvez-le en premier dans Découvrir et dans Recherche, tel que les autres le verront.';
+  m.textContent='Profil enregistré. Les distances sont maintenant calculées depuis '+cityInfo.name+'. Retrouvez votre profil en premier dans Découvrir et Recherche.';
   toast('Profil enregistré.');
+}
+
+
+/* Présence : bandeau, rafraîchissement, simulation */
+function updateOnlineCount(){
+  const n=P.filter(p=>p.online&&!p.mine).length,c=$('#onl-c');
+  if(c)c.textContent=n+(n>1?' profils connectés':' profil connecté');
+}
+function renderStrip(){
+  const el=$('#onstrip');if(!el)return;
+  const on=P.filter(p=>p.online&&!p.mine);
+  el.hidden=!on.length;
+  if(!on.length){el.innerHTML='';return}
+  el.innerHTML=`<span class="os-l"><i class="dot"></i>En ligne</span><span class="os-av">${on.slice(0,5).map(p=>`<span class="osa" title="${p.n}">${portrait(p,34,true)}<i class="dot"></i></span>`).join('')}</span><button class="link" id="os-all">Voir tout (${on.length})</button>`;
+  $('#os-all').addEventListener('click',()=>{
+    F.online=true;const sw=$('#onl');if(sw)sw.setAttribute('aria-checked','true');
+    show('search');
+  });
+}
+function refreshPresence(){
+  $$('[data-pres]').forEach(el=>{
+    const p=P.find(x=>x.n===el.dataset.pres);if(!p)return;
+    el.className='pres'+(p.online?' on':'');el.innerHTML='<i></i>'+presText(p);
+  });
+  renderStrip();
+  if(F.online)updateResults();else updateOnlineCount();
 }
 
 renderDeck();
 renderSearch();
 renderMessages(false);
 renderProfile();
+renderStrip();
+setInterval(()=>{
+  if(document.hidden)return;
+  const pool=P.filter(p=>!p.mine);
+  const p=pool[Math.floor(Math.random()*pool.length)];
+  if(!p)return;
+  p.online=!p.online;if(!p.online)p.seen=1;
+  refreshPresence();
+},12000);
+
 
 /* Porte d'entrée */
 const LAND=$('#landing'),APPEL=document.querySelector('.app');
