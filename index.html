@@ -483,7 +483,7 @@ function card(p){
     <div class="card-in">
       <div class="who">${portrait(p,72,true)}
         <div><h2>${p.n}</h2>
-          <p class="meta"><span>${p.a} ans, ${p.c}</span>${p.v?`<span class="ver">${CHECK}Vérifié${p.f?'e':''}</span>`:''}</p>
+          <p class="meta"><span>${p.a} ans, ${p.c}</span>${p.v?`<span class="ver">${CHECK}Vérifié${p.f?'e':''}</span>`:''}${p.mine?'<span class="ver">Votre profil</span>':''}</p>
         </div>
       </div>
       <span class="seal">${p.r}</span>
@@ -550,7 +550,8 @@ function decide(dir){
   setTimeout(()=>{
     idx++;busy=false;renderDeck();
     if(dir==='yes'){
-      if(p.m)showMatch(p);
+      if(p.mine)toast('C’est votre profil : voici ce que les autres verront.');
+      else if(p.m)showMatch(p);
       else toast('Invitation envoyée à '+p.n+'.');
     }
   },330);
@@ -621,7 +622,7 @@ function updateResults(){
   $('#results').innerHTML=list.length?list.map(p=>`
     <div class="result">${portrait(p,52,true)}
       <div class="info"><b>${p.n}, ${p.a}</b><small>${p.r}, ${p.c}, à ${p.d} km${p.v?', vérifié'+(p.f?'e':''):''}</small></div>
-      <button class="btn" data-n="${p.n}" ${sent.has(p.n)?'disabled':''}>${sent.has(p.n)?'Envoyée':'Inviter'}</button>
+      ${p.mine?'<span class="muted">Votre profil</span>':`<button class="btn" data-n="${p.n}" ${sent.has(p.n)?'disabled':''}>${sent.has(p.n)?'Envoyée':'Inviter'}</button>`}
     </div>`).join('')
     :`<p class="none">Aucun profil ne correspond. Élargissez la distance ou retirez un filtre.</p>`;
   $$('#results .btn').forEach(b=>b.addEventListener('click',()=>{
@@ -869,14 +870,27 @@ function showPreview(){
 
 function saveProfile(){
   const e=[],a=+me.a;
-  if(!me.n.trim())e.push('Choisissez un pseudo.');
+  const name=me.n.replace(/[<>&"']/g,'').trim();
+  if(!name)e.push('Choisissez un pseudo.');
   if(!(a>=18&&a<=99))e.push('Indiquez votre âge. Le minimum est 18 ans.');
   if(!me.c.trim())e.push('Indiquez votre ville.');
   if(!me.r)e.push('Choisissez votre rôle.');
   const m=$('#pf-msg');
   if(e.length){m.className='err';m.innerHTML=e.join('<br>');m.scrollIntoView({block:'center'});return}
+  const mine={
+    n:name,a:a,c:esc(me.c.trim()),d:0,r:me.r,h:40,v:false,f:me.r==='soumise',m:false,mine:true,pv:true,
+    q:esc(me.q.trim()||'Une présentation à écrire.'),
+    seek:esc(me.seek.trim()||[...me.rel].map(k=>REL[k]).join(', ')||'À préciser.'),
+    dyn:me.dyn.length?me.dyn.map(esc):['À renseigner'],
+    lim:me.lim.length?me.lim.map(esc):['À renseigner'],
+    rel:[...me.rel],img:me.pub[0],priv:me.prv.length,acc:'locked'
+  };
+  const at=P.findIndex(x=>x.mine);
+  if(at>=0)P.splice(at,1);
+  P.unshift(mine);
+  idx=0;busy=false;renderDeck();updateResults();
   m.className='okm';
-  m.textContent='Profil enregistré. Vos photos privées restent fermées tant que vous n’autorisez personne.';
+  m.textContent='Profil enregistré. Retrouvez-le en premier dans Découvrir et dans Recherche, tel que les autres le verront.';
   toast('Profil enregistré.');
 }
 
