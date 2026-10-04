@@ -251,6 +251,69 @@ input[type=range]{width:100%;accent-color:var(--gold)}
 .l-hint{margin:12px 0 0;text-align:center;font-size:13px;color:var(--muted)}
 .l-foot{padding:24px 0 calc(32px + env(safe-area-inset-bottom,0px));text-align:center;font-size:13px;color:var(--muted)}
 @media (hover:hover){.l-cta:hover{filter:brightness(1.1)}}
+
+/* Photos privées sur les cartes */
+.portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.prow{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.pthumbs{display:flex;gap:6px}
+.pt{position:relative;width:44px;height:56px;border-radius:4px;overflow:hidden;border:1px solid var(--gold-line);display:inline-block}
+.pt .pi{filter:blur(6px)}
+.pt.ok .pi{filter:none;inset:0}
+.pt .pl svg{width:16px;height:16px}
+.ok-t{color:var(--gold);font-size:14px}
+.btn.small{padding:8px 16px;font-size:14px}
+
+/* Mon profil */
+:root{--err:#9B1C31}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--err:#F08FA0}}
+:root[data-theme="dark"]{--err:#F08FA0}
+.pf{flex:1;min-height:0;overflow-y:auto;padding:6px 20px 32px}
+.pf h2{font-family:var(--serif);font-weight:600;font-size:28px;margin:6px 0 4px}
+.pf-intro,.pf-note{margin:0 0 8px;color:var(--muted);line-height:1.5;font-size:14px}
+.field{margin:10px 0}
+.field label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+.field input,.field textarea,.addrow input{width:100%;border:1px solid var(--gold-line);background:var(--surface);color:var(--ink);padding:12px 14px;border-radius:6px;font:inherit;font-size:16px}
+.field textarea{resize:none;line-height:1.4}
+.field small{display:block;text-align:right;color:var(--muted);font-size:12px;margin-top:4px}
+.two{display:grid;grid-template-columns:110px 1fr;gap:12px}
+.addrow{display:flex;gap:8px;margin-top:12px}
+.addrow input{flex:1;min-width:0}
+.ph-t{font-family:var(--serif);font-weight:600;font-size:21px;margin:14px 0 2px}
+.ph-t small{display:block;font-family:var(--sans);font-weight:400;font-size:13px;color:var(--muted);margin-top:2px}
+.ph-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0 18px}
+.ph{position:relative;aspect-ratio:3/4;border:1px solid var(--gold-line);border-radius:6px;overflow:hidden;background:var(--surface)}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.ph .x{position:absolute;top:6px;right:6px;width:32px;height:32px;border-radius:50%;border:0;background:rgba(0,0,0,.7);color:#fff;font-size:20px;line-height:1;padding:0}
+.ph .lk{position:absolute;left:6px;bottom:6px;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,.7);color:#fff;display:flex;align-items:center;justify-content:center}
+.ph .lk svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8}
+.ph.add{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;color:var(--gold);border-style:dashed;font-size:13px}
+.ph.add span{font-family:var(--serif);font-size:30px;line-height:1}
+.ph.add:focus-within{outline:2px solid var(--gold);outline-offset:2px}
+.vh{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+.a-t{font-family:var(--serif);font-style:italic;font-weight:600;font-size:18px;color:var(--ink);margin:16px 0 4px}
+.arow{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--gold-line)}
+.arow .info{flex:1;min-width:0}
+.arow b{font-family:var(--serif);font-weight:600;font-size:20px;display:block;line-height:1.1}
+.arow small{color:var(--muted);font-size:13px}
+.arow .btn{flex:none}
+.pf-actions{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.pf-actions .btn{flex:1;min-width:150px}
+#pf-msg{margin:14px 0 0;line-height:1.5;min-height:1em}
+#pf-msg.err{color:var(--err)}
+#pf-msg.okm{color:var(--gold)}
+
+/* Aperçu de la carte */
+.pv-wrap{width:min(390px,100%);text-align:center}
+.pv-t{margin:0 0 12px;color:#F3EBDD;font-size:14px}
+.pv{position:relative;height:min(560px,64vh);text-align:left}
+.pv .card{cursor:default}
+.pv .stamp{display:none}
+.pv-wrap .row{display:flex;justify-content:center;margin-top:14px}
+
+@media (min-width:900px){
+  .pf{width:100%;max-width:760px;margin:0 auto;padding:36px 48px 40px}
+  .pf h2{font-size:40px}
+}
 </style>
 </head>
 <body>
@@ -268,9 +331,9 @@ input[type=range]{width:100%;accent-color:var(--gold)}
       <h2>Le concept</h2>
       <p class="l-p">Safeword réunit des Dominants et des soumises qui cherchent un ou plusieurs partenaires, dans un cadre où le consentement n’est jamais une option.</p>
       <div class="l-list">
-        <div><h3>Le profil avant la photo</h3><p>Votre rôle, ce que vous recherchez, vos pratiques et vos limites passent en premier. Le portrait reste flou jusqu’à l’accord mutuel.</p></div>
+        <div><h3>Le profil avant la photo</h3><p>Votre rôle, ce que vous recherchez, vos pratiques et vos limites passent en premier. Les photos viennent ensuite.</p></div>
         <div><h3>Deux façons de se trouver</h3><p>Faites défiler les profils d’un geste, ou lancez une recherche précise par rôle, type de relation et distance.</p></div>
-        <div><h3>Des photos uniquement sur accord</h3><p>Aucune image n’arrive sans l’accord de la destinataire. Elle la reçoit floutée et choisit de l’accepter ou de la refuser.</p></div>
+        <div><h3>Photos publiques, photos privées</h3><p>Chaque membre choisit ce qu’il montre à tous et ce qu’il réserve. Les photos privées ne s’ouvrent qu’avec son autorisation : il les débloque lui-même, ou il répond à une demande. En message, aucune image n’arrive sans l’accord de la destinataire.</p></div>
         <div><h3>Gratuit</h3><p>L’application est gratuite pour rencontrer, rechercher et écrire.</p></div>
       </div>
     </section>
@@ -281,7 +344,7 @@ input[type=range]{width:100%;accent-color:var(--gold)}
       <ul class="l-rules">
         <li>Le consentement passe avant tout. Un non, un silence ou une hésitation valent un refus, à tout moment.</li>
         <li>Les limites affichées sur un profil sont respectées. Aucune insistance, aucune négociation.</li>
-        <li>Aucune photo n’est envoyée sans l’accord de la destinataire.</li>
+        <li>Les photos privées ne s’ouvrent qu’avec l’autorisation de leur propriétaire, et aucune photo n’est envoyée en message sans l’accord de la destinataire.</li>
         <li>Ce qui se dit ici reste ici : pas de capture d’écran, de partage ni de divulgation d’un profil ou d’une conversation.</li>
         <li>Vous avez 18 ans ou plus et un seul profil, honnête. Les faux profils sont exclus.</li>
         <li>Le harcèlement, la pression et les comportements agressifs entraînent une exclusion immédiate.</li>
@@ -322,6 +385,7 @@ input[type=range]{width:100%;accent-color:var(--gold)}
     </section>
     <section class="view" id="v-search" aria-label="Recherche" hidden></section>
     <section class="view" id="v-messages" aria-label="Messages" hidden></section>
+    <section class="view" id="v-profile" aria-label="Mon profil" hidden></section>
   </main>
 
   <nav class="tabs" role="tablist" aria-label="Navigation">
@@ -336,6 +400,10 @@ input[type=range]{width:100%;accent-color:var(--gold)}
     <button class="tab" role="tab" data-tab="messages" aria-selected="false">
       <svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>
       Messages
+    </button>
+    <button class="tab" role="tab" data-tab="profile" aria-selected="false">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 21c1-4 4-6 7.500-6s6.500 2 7.500 6"/></svg>
+      Mon profil
     </button>
   </nav>
 
@@ -378,10 +446,14 @@ const P=[
   lim:['Pas de jeux dangereux','Discrétion absolue'],rel:['unique','sessions']}
 ];
 
+const PRIV={'Marc-Antoine':[3,'locked'],'Élise':[2,'locked'],'Victor':[0,'locked'],'Camille':[4,'granted'],'Sébastien':[2,'locked']};
+P.forEach(p=>{p.priv=PRIV[p.n][0];p.acc=PRIV[p.n][1]});
+
 const $=s=>document.querySelector(s);
 const $$=s=>[...document.querySelectorAll(s)];
 
 function portrait(p,size,clear){
+  if(p.img)return `<span class="portrait clear" style="--s:${size}px"><img src="${p.img}" alt=""></span>`;
   return `<span class="portrait${clear?' clear':''}" style="--h:${p.h};--s:${size}px"><span class="pi"></span>${clear?'':'<span class="pl">'+LOCK+'</span>'}</span>`;
 }
 
@@ -396,7 +468,7 @@ function toast(msg){
 let tab='discover';
 function show(t){
   tab=t;
-  ['discover','search','messages'].forEach(k=>{$('#v-'+k).hidden=(k!==t)});
+  ['discover','search','messages','profile'].forEach(k=>{$('#v-'+k).hidden=(k!==t)});
   $$('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));
   if(t==='messages'){const c=$('#chat');if(c)c.scrollTop=c.scrollHeight}
 }
@@ -409,7 +481,7 @@ function card(p){
   return `<article class="card">
     <div class="stamp yes">Inviter</div><div class="stamp no">Passer</div>
     <div class="card-in">
-      <div class="who">${portrait(p,72)}
+      <div class="who">${portrait(p,72,true)}
         <div><h2>${p.n}</h2>
           <p class="meta"><span>${p.a} ans, ${p.c}</span>${p.v?`<span class="ver">${CHECK}Vérifié${p.f?'e':''}</span>`:''}</p>
         </div>
@@ -420,8 +492,8 @@ function card(p){
         <div><dt>Cherche</dt><dd>${p.seek}</dd></div>
         <div><dt>Dynamique</dt><dd class="tags">${p.dyn.map(x=>`<span>${x}</span>`).join('')}</dd></div>
         <div><dt>Limites</dt><dd class="tags lim">${p.lim.map(x=>`<span>${x}</span>`).join('')}</dd></div>
+        <div><dt>Photos privées</dt><dd>${photosRow(p)}</dd></div>
       </dl>
-      <p class="hint">${LOCK}Le portrait se révèle après un accord mutuel.</p>
     </div>
   </article>`;
 }
@@ -450,7 +522,7 @@ function setPos(c,dx){
 function attachDrag(c){
   let sx=0,dx=0,drag=false;
   c.addEventListener('pointerdown',e=>{
-    if(busy)return;drag=true;sx=e.clientX;dx=0;
+    if(busy||e.target.closest('button'))return;drag=true;sx=e.clientX;dx=0;
     c.setPointerCapture(e.pointerId);c.style.transition='none';c.style.cursor='grabbing';
   });
   c.addEventListener('pointermove',e=>{
@@ -498,7 +570,7 @@ function showMatch(p){
   o.innerHTML=`<div class="modal">
     <div class="pair">${portrait({h:200},84,true)}${portrait(p,84,true)}</div>
     <h2>Accord mutuel avec ${p.n}</h2>
-    <p>Vos portraits sont désormais visibles. Les photos envoyées en message restent soumises à l’accord de la destinataire.</p>
+    <p>Vous pouvez maintenant vous écrire. Les photos privées restent soumises à l’autorisation de leur propriétaire.</p>
     <div class="row"><button class="btn ghost" id="m-go">Continuer</button><button class="btn" id="m-write">Écrire</button></div>
   </div>`;
   $('#m-go').onclick=()=>{o.hidden=true};
@@ -547,7 +619,7 @@ function updateResults(){
   ).sort((a,b)=>a.d-b.d);
   $('#count').textContent=list.length+(list.length>1?' profils':' profil');
   $('#results').innerHTML=list.length?list.map(p=>`
-    <div class="result">${portrait(p,52)}
+    <div class="result">${portrait(p,52,true)}
       <div class="info"><b>${p.n}, ${p.a}</b><small>${p.r}, ${p.c}, à ${p.d} km${p.v?', vérifié'+(p.f?'e':''):''}</small></div>
       <button class="btn" data-n="${p.n}" ${sent.has(p.n)?'disabled':''}>${sent.has(p.n)?'Envoyée':'Inviter'}</button>
     </div>`).join('')
@@ -618,9 +690,200 @@ function renderMessages(keepDraft){
   $('#msg').addEventListener('keydown',e=>{if(e.key==='Enter')send()});
 }
 
+
+/* Photos privées des autres membres */
+const access={};P.forEach(p=>access[p.n]=p.acc);
+
+function photosRow(p){
+  if(!p.priv)return '<span class="muted">Aucune photo privée.</span>';
+  const st=p.pv?'locked':access[p.n];
+  const th=[...Array(Math.min(p.priv,4))].map((_,i)=>`<span class="pt${st==='granted'?' ok':''}" style="--h:${p.h+i*22}"><span class="pi"></span>${st==='granted'?'':'<span class="pl">'+LOCK+'</span>'}</span>`).join('');
+  let stat;
+  if(p.pv)stat='<span class="muted">Accessibles sur demande</span>';
+  else if(st==='granted')stat='<span class="ok-t">Accès accordé</span>';
+  else if(st==='requested')stat='<span class="muted">Demande envoyée</span>';
+  else stat=`<button class="btn small" data-req="${p.n}">Demander l’accès</button>`;
+  return `<div class="prow" data-n="${p.n}"><div class="pthumbs">${th}</div><div class="pstat">${stat}</div></div>`;
+}
+$('#deck').addEventListener('click',e=>{
+  const b=e.target.closest('[data-req]');if(!b)return;
+  const n=b.dataset.req;access[n]='requested';
+  b.closest('.prow').outerHTML=photosRow(P.find(x=>x.n===n));
+  toast('Demande envoyée à '+n+'.');
+});
+
+/* Mon profil */
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const me={n:'',a:'',c:'',r:'',q:'',seek:'',rel:new Set(),dyn:[],lim:[],pub:[],prv:[]};
+const own={requests:['Marc-Antoine','Victor'],granted:[]};
+const CONTACTS=['Élise','Camille','Sébastien'];
+const SUG={
+  dyn:['Protocole','Rituels','Discipline douce','Service','Éducation','Découverte','Soirées privées','Communication franche'],
+  lim:['Aucune marque visible','Pas d’humiliation en public','Rien sans mot de sécurité','Première rencontre en lieu public','Discrétion absolue','Pas d’alcool pendant les séances']
+};
+const MAXP=3,MAXV=6;
+
+function renderProfile(){
+  $('#v-profile').innerHTML=`<div class="pf">
+    <h2>Mon profil</h2>
+    <p class="pf-intro">Votre profil passe avant vos photos : prenez le temps de le soigner.</p>
+    <div class="group"><span>Identité</span>
+      <div class="field"><label for="f-n">Pseudo</label><input id="f-n" maxlength="24" autocomplete="off"></div>
+      <div class="two">
+        <div class="field"><label for="f-a">Âge</label><input id="f-a" type="number" inputmode="numeric" min="18" max="99"></div>
+        <div class="field"><label for="f-c">Ville</label><input id="f-c" maxlength="40" autocomplete="off"></div>
+      </div>
+    </div>
+    <div class="group"><span>Mon rôle</span><div class="chips" id="roles">${ROLES.map(r=>`<button class="chip" data-v="${r}" aria-pressed="false">${r}</button>`).join('')}</div></div>
+    <div class="group"><span>Ma phrase</span>
+      <div class="field"><textarea id="f-q" maxlength="90" rows="2" placeholder="Une phrase qui vous ressemble" aria-label="Ma phrase"></textarea><small id="q-c">0/90</small></div>
+    </div>
+    <div class="group"><span>Ce que je cherche</span>
+      <div class="chips" id="rels">${Object.entries(REL).map(([k,l])=>`<button class="chip" data-v="${k}" aria-pressed="false">${l}</button>`).join('')}</div>
+      <div class="field"><textarea id="f-s" maxlength="140" rows="2" placeholder="En quelques mots" aria-label="Ce que je cherche, en quelques mots"></textarea><small id="s-c">0/140</small></div>
+    </div>
+    <div class="group"><span>Ma dynamique</span>
+      <div class="chips" id="dyn-s"></div>
+      <div class="addrow"><input id="dyn-i" maxlength="30" placeholder="Ajouter la vôtre" aria-label="Ajouter une pratique"><button class="btn ghost small" id="dyn-b">Ajouter</button></div>
+    </div>
+    <div class="group"><span>Mes limites</span>
+      <div class="chips" id="lim-s"></div>
+      <div class="addrow"><input id="lim-i" maxlength="30" placeholder="Ajouter la vôtre" aria-label="Ajouter une limite"><button class="btn ghost small" id="lim-b">Ajouter</button></div>
+    </div>
+    <div class="group"><span>Mes photos</span>
+      <p class="pf-note">Dans cette maquette, vos photos restent sur votre appareil et ne sont envoyées nulle part.</p>
+      <div id="pf-photos"></div>
+    </div>
+    <div class="group"><span>Accès à mes photos privées</span>
+      <p class="pf-note">Personne ne voit vos photos privées sans votre accord. Vous pouvez répondre aux demandes, ou ouvrir l’accès vous-même à un contact.</p>
+      <div id="pf-access"></div>
+    </div>
+    <div class="pf-actions">
+      <button class="btn ghost" id="pf-prev">Voir mon aperçu</button>
+      <button class="btn" id="pf-save">Enregistrer mon profil</button>
+    </div>
+    <p id="pf-msg" role="alert"></p>
+  </div>`;
+  $('#f-n').addEventListener('input',e=>{me.n=e.target.value});
+  $('#f-a').addEventListener('input',e=>{me.a=e.target.value});
+  $('#f-c').addEventListener('input',e=>{me.c=e.target.value});
+  $('#f-q').addEventListener('input',e=>{me.q=e.target.value;$('#q-c').textContent=me.q.length+'/90'});
+  $('#f-s').addEventListener('input',e=>{me.seek=e.target.value;$('#s-c').textContent=me.seek.length+'/140'});
+  $$('#roles .chip').forEach(b=>b.addEventListener('click',()=>{
+    me.r=b.dataset.v;
+    $$('#roles .chip').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===me.r));
+  }));
+  $$('#rels .chip').forEach(b=>b.addEventListener('click',()=>{
+    const k=b.dataset.v;
+    if(me.rel.has(k))me.rel.delete(k);else me.rel.add(k);
+    b.setAttribute('aria-pressed',me.rel.has(k));
+  }));
+  ['dyn','lim'].forEach(k=>{
+    renderTags(k);
+    $('#'+k+'-b').addEventListener('click',()=>addTag(k));
+    $('#'+k+'-i').addEventListener('keydown',e=>{if(e.key==='Enter')addTag(k)});
+  });
+  renderPhotos();renderAccess();
+  $('#pf-prev').addEventListener('click',showPreview);
+  $('#pf-save').addEventListener('click',saveProfile);
+}
+
+function renderTags(k,focusIdx){
+  const list=[...SUG[k],...me[k].filter(x=>!SUG[k].includes(x))];
+  $('#'+k+'-s').innerHTML=list.map((t,i)=>`<button class="chip" data-i="${i}" aria-pressed="${me[k].includes(t)}">${esc(t)}</button>`).join('');
+  $$('#'+k+'-s .chip').forEach(b=>b.addEventListener('click',()=>{
+    const i=+b.dataset.i,t=list[i];
+    me[k]=me[k].includes(t)?me[k].filter(x=>x!==t):[...me[k],t];
+    renderTags(k,i);
+  }));
+  if(focusIdx!==undefined){const nb=$('#'+k+'-s .chip[data-i="'+focusIdx+'"]');if(nb)nb.focus()}
+}
+function addTag(k){
+  const inp=$('#'+k+'-i'),t=inp.value.trim().slice(0,30);
+  if(!t)return;
+  if(!me[k].includes(t))me[k]=[...me[k],t];
+  inp.value='';renderTags(k);inp.focus();
+}
+
+function renderPhotos(){
+  const tile=(src,kind,i)=>`<div class="ph"><img src="${src}" alt="Photo ${kind==='pub'?'publique':'privée'} ${i+1}">${kind==='prv'?'<span class="lk">'+LOCK+'</span>':''}<button class="x" data-rm="${kind}" data-i="${i}" aria-label="Retirer la photo ${i+1}">×</button></div>`;
+  const add=(kind,left)=>left>0?`<label class="ph add"><input class="vh" type="file" accept="image/*" multiple data-add="${kind}"><span>+</span>Ajouter</label>`:'';
+  $('#pf-photos').innerHTML=`
+    <h3 class="ph-t">Photos publiques<small>Visibles par tous les membres. ${MAXP} au maximum.</small></h3>
+    <div class="ph-grid">${me.pub.map((x,i)=>tile(x,'pub',i)).join('')}${add('pub',MAXP-me.pub.length)}</div>
+    <h3 class="ph-t">Photos privées<small>Visibles seulement par les personnes que vous autorisez. ${MAXV} au maximum.</small></h3>
+    <div class="ph-grid">${me.prv.map((x,i)=>tile(x,'prv',i)).join('')}${add('prv',MAXV-me.prv.length)}</div>`;
+  $$('#pf-photos [data-rm]').forEach(b=>b.addEventListener('click',()=>{
+    (b.dataset.rm==='pub'?me.pub:me.prv).splice(+b.dataset.i,1);renderPhotos();
+  }));
+  $$('#pf-photos input[data-add]').forEach(inp=>inp.addEventListener('change',()=>addPhotos(inp)));
+}
+function addPhotos(inp){
+  const kind=inp.dataset.add,arr=kind==='pub'?me.pub:me.prv,max=kind==='pub'?MAXP:MAXV;
+  const files=[...inp.files].filter(f=>f.type.startsWith('image/'));
+  const room=max-arr.length;
+  if(files.length>room)toast('Maximum atteint : '+max+' photos.');
+  files.slice(0,room).forEach(f=>{
+    if(f.size>8e6){toast('Photo trop lourde : 8 Mo maximum.');return}
+    const r=new FileReader();
+    r.onload=()=>{if(arr.length<max){arr.push(r.result);renderPhotos()}};
+    r.readAsDataURL(f);
+  });
+  inp.value='';
+}
+
+function renderAccess(){
+  const reqs=own.requests,gr=own.granted,free=CONTACTS.filter(n=>!gr.includes(n));
+  const row=(n,btns)=>{const p=P.find(x=>x.n===n);return `<div class="arow">${portrait(p,44,true)}<div class="info"><b>${p.n}</b><small>${p.r}, ${p.c}</small></div>${btns}</div>`};
+  $('#pf-access').innerHTML=`
+    <p class="a-t">Demandes reçues</p>
+    ${reqs.length?reqs.map(n=>row(n,`<button class="btn ghost small" data-a="no" data-n="${n}">Refuser</button><button class="btn small" data-a="ok" data-n="${n}">Autoriser</button>`)).join(''):'<p class="none">Aucune demande pour l’instant.</p>'}
+    <p class="a-t">Personnes autorisées</p>
+    ${gr.length?gr.map(n=>row(n,`<button class="btn ghost small" data-a="rm" data-n="${n}">Retirer</button>`)).join(''):'<p class="none">Personne pour l’instant.</p>'}
+    <p class="a-t">Ouvrir l’accès vous-même</p>
+    ${free.length?`<div class="chips">${free.map(n=>`<button class="chip" data-a="unlock" data-n="${n}">Ouvrir à ${n}</button>`).join('')}</div>`:'<p class="none">Tous vos contacts ont accès.</p>'}`;
+  $$('#pf-access [data-a]').forEach(b=>b.addEventListener('click',()=>{
+    const n=b.dataset.n,a=b.dataset.a;
+    if(a==='no'){own.requests=own.requests.filter(x=>x!==n);toast('Demande refusée.')}
+    if(a==='ok'){own.requests=own.requests.filter(x=>x!==n);if(!own.granted.includes(n))own.granted.push(n);toast('Vos photos privées sont ouvertes à '+n+'.')}
+    if(a==='rm'){own.granted=own.granted.filter(x=>x!==n);toast('Accès retiré à '+n+'.')}
+    if(a==='unlock'){if(!own.granted.includes(n))own.granted.push(n);toast('Vos photos privées sont ouvertes à '+n+'.')}
+    renderAccess();
+  }));
+}
+
+function showPreview(){
+  const tags=a=>a.length?a.map(esc):['À renseigner'];
+  const p={
+    n:esc(me.n.trim()||'Votre pseudo'),a:esc(me.a||'…'),c:esc(me.c.trim()||'Votre ville'),
+    r:me.r||'Votre rôle',h:40,v:false,f:false,
+    q:esc(me.q.trim()||'Votre phrase apparaîtra ici.'),
+    seek:esc(me.seek.trim()||[...me.rel].map(k=>REL[k]).join(', ')||'À préciser.'),
+    dyn:tags(me.dyn),lim:tags(me.lim),img:me.pub[0],priv:me.prv.length,pv:true
+  };
+  const o=$('#overlay');o.hidden=false;
+  o.innerHTML=`<div class="pv-wrap"><p class="pv-t">Voici votre carte, telle que les autres la verront.</p><div class="pv">${card(p)}</div><div class="row"><button class="btn" id="pv-x">Fermer</button></div></div>`;
+  $('#pv-x').onclick=()=>{o.hidden=true};
+  $('#pv-x').focus();
+}
+
+function saveProfile(){
+  const e=[],a=+me.a;
+  if(!me.n.trim())e.push('Choisissez un pseudo.');
+  if(!(a>=18&&a<=99))e.push('Indiquez votre âge. Le minimum est 18 ans.');
+  if(!me.c.trim())e.push('Indiquez votre ville.');
+  if(!me.r)e.push('Choisissez votre rôle.');
+  const m=$('#pf-msg');
+  if(e.length){m.className='err';m.innerHTML=e.join('<br>');m.scrollIntoView({block:'center'});return}
+  m.className='okm';
+  m.textContent='Profil enregistré. Vos photos privées restent fermées tant que vous n’autorisez personne.';
+  toast('Profil enregistré.');
+}
+
 renderDeck();
 renderSearch();
 renderMessages(false);
+renderProfile();
 
 /* Porte d'entrée */
 const LAND=$('#landing'),APPEL=document.querySelector('.app');
