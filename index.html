@@ -363,6 +363,75 @@ input[type=range]{width:100%;accent-color:var(--gold)}
 @media (min-width:900px){
   .onstrip{width:100%;max-width:540px;margin:20px auto 0;padding:0 18px}
 }
+
+/* Emblème Safeword (sans photo) */
+.portrait.emblem{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;background:var(--surface)}
+.portrait.emblem::after{content:"";position:absolute;inset:3px;border:1px solid var(--gold-line);border-radius:50%;pointer-events:none}
+.em-l{font-family:var(--serif);font-weight:600;font-size:calc(var(--s)*.5);line-height:1;color:var(--gold);background:var(--brand-grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;transform:translateY(-4%)}
+.em-d{display:block;width:calc(var(--s)*.09);height:calc(var(--s)*.09);min-width:3px;min-height:3px;margin-top:calc(var(--s)*.05);transform:rotate(45deg);background:var(--gold)}
+.thumb,.pt{background-color:var(--surface);background-image:repeating-linear-gradient(135deg,transparent 0 9px,var(--gold-line) 9px 10px)}
+.thumb .pi,.pt .pi{display:none}
+.thumb .pl,.pt .pl{color:var(--gold)}
+.thumb .pl svg,.pt .pl svg{filter:none}
+.thumb.clear::after,.pt.ok::after{content:"";position:absolute;left:50%;top:50%;width:20px;height:20px;transform:translate(-50%,-50%) rotate(45deg);border:1px solid var(--gold);background:var(--surface)}
+.pt.ok::after{width:12px;height:12px}
+
+/* Carte résumé : le glissement ne se bat plus avec le défilement */
+.card{touch-action:none;-webkit-touch-callout:none;-webkit-user-drag:none}
+.card.full{position:relative;inset:auto;cursor:default;box-shadow:none;touch-action:auto;overflow:visible;user-select:text;-webkit-user-select:text}
+.card.full .card-in{height:auto;overflow:visible;padding:26px 24px 20px}
+.card-in.sum{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;padding:18px 22px 16px;overflow:hidden}
+.sum h2{font-family:var(--serif);font-weight:600;font-size:34px;line-height:1.05;margin:8px 0 0}
+.sum .meta{justify-content:center;margin:0}
+.sum .seal{margin:10px 0 0}
+.sum blockquote{margin:10px 0 0;font-size:22px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.more{margin-top:14px;background:none;border:1px solid var(--gold-line);border-radius:999px;padding:10px 20px;font-size:14px;color:var(--gold)}
+@media (max-height:700px){
+  .sum h2{font-size:30px}
+  .sum blockquote{font-size:20px;-webkit-line-clamp:2}
+  .sum .portrait{--s:72px!important}
+}
+.pv{overflow-y:auto}
+.sheet{width:min(430px,100%);max-height:100%;display:flex;flex-direction:column;background:var(--bg);border:1px solid var(--gold);border-radius:8px;overflow:hidden}
+.sheet-body{flex:1;min-height:0;overflow-y:auto;padding:14px}
+.sheet-act{display:flex;gap:10px;padding:12px 14px;border-top:1px solid var(--gold-line)}
+.sheet-act .btn{flex:1}
+
+/* Boîte de réception */
+.inbox{flex:1;min-height:0;overflow-y:auto;padding:6px 20px 28px}
+.inbox h2{font-family:var(--serif);font-weight:600;font-size:28px;margin:6px 0 4px}
+.crow{display:flex;gap:14px;align-items:center;width:100%;padding:12px 0;border:0;border-bottom:1px solid var(--gold-line);background:none;text-align:left;color:var(--ink)}
+.crow .ci{flex:1;min-width:0}
+.crow b{font-family:var(--serif);font-weight:600;font-size:22px;line-height:1.1;display:block}
+.crow small{display:block;color:var(--muted);font-size:13px;margin-top:3px}
+.crow .prev{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nb{font-style:normal;font-size:12px;border:1px solid var(--gold);color:var(--gold);border-radius:999px;padding:2px 10px;flex:none}
+.tab{position:relative}
+.badge{position:absolute;top:5px;left:calc(50% + 8px);min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--cta-grad,var(--cta-bg));color:var(--cta-ink);font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center}
+.badge[hidden]{display:none}
+.chat-head{gap:12px}
+@media (min-width:900px){
+  .badge{position:static;margin-left:auto}
+  .inbox{width:100%;max-width:760px;margin:0 auto;padding:36px 48px 40px}
+  .inbox h2{font-size:40px}
+}
+
+/* Messages : heure, coches, demandes dans le fil */
+:root{--tick-read:#62CBFF}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--tick-read:#0A4FBF}}
+:root[data-theme="dark"]{--tick-read:#0A4FBF}
+.b.in,.b.out{display:flex;flex-wrap:wrap;align-items:flex-end;column-gap:10px}
+.b .bt{min-width:0;overflow-wrap:anywhere}
+.b .bm{margin-left:auto;display:inline-flex;align-items:center;gap:4px;font-size:11px;opacity:.8;white-space:nowrap;line-height:1.6}
+.b .bm time{font-variant-numeric:tabular-nums}
+.ticks{display:inline-flex;width:17px;height:12px;opacity:.75}
+.ticks svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.ticks.s-read{color:var(--tick-read);opacity:1}
+.reqmsg{align-self:flex-end;max-width:84%;border:1px dashed var(--gold);border-radius:8px;padding:10px 14px}
+.reqmsg b{display:block;font-family:var(--serif);font-weight:600;font-size:19px;line-height:1.1}
+.reqmsg p{margin:6px 0;font-size:14px;line-height:1.4}
+.reqmsg .rs{font-size:13px;color:var(--gold)}
+.reqmsg .link{display:block;margin-top:6px}
 </style>
 </head>
 <body>
@@ -450,6 +519,7 @@ input[type=range]{width:100%;accent-color:var(--gold)}
     <button class="tab" role="tab" data-tab="messages" aria-selected="false">
       <svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>
       Messages
+      <span class="badge" id="msg-badge" hidden></span>
     </button>
     <button class="tab" role="tab" data-tab="profile" aria-selected="false">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 21c1-4 4-6 7.500-6s6.500 2 7.500 6"/></svg>
@@ -544,7 +614,8 @@ const $$=s=>[...document.querySelectorAll(s)];
 
 function portrait(p,size,clear){
   if(p.img)return `<span class="portrait clear" style="--s:${size}px"><img src="${p.img}" alt=""></span>`;
-  return `<span class="portrait${clear?' clear':''}" style="--h:${p.h};--s:${size}px"><span class="pi"></span>${clear?'':'<span class="pl">'+LOCK+'</span>'}</span>`;
+  const L=[...String(p.n||'S')][0].toUpperCase();
+  return `<span class="portrait emblem" style="--s:${size}px" aria-hidden="true"><span class="em-l">${L}</span><i class="em-d"></i></span>`;
 }
 
 /* Toast */
@@ -560,7 +631,7 @@ function show(t){
   tab=t;
   ['discover','search','messages','profile'].forEach(k=>{$('#v-'+k).hidden=(k!==t)});
   $$('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));
-  if(t==='messages'){const c=$('#chat');if(c)c.scrollTop=c.scrollHeight}
+  if(t==='messages'&&typeof renderMsgArea==='function'){renderMsgArea();invites.forEach(i=>{i.seen=true});updateBadge()}
   if(t==='search'&&typeof updateResults==='function')updateResults();
 }
 $$('.tab').forEach(b=>b.addEventListener('click',()=>show(b.dataset.tab)));
@@ -568,10 +639,8 @@ $$('.tab').forEach(b=>b.addEventListener('click',()=>show(b.dataset.tab)));
 /* Découvrir */
 let idx=0,busy=false;
 
-function card(p){
-  return `<article class="card">
-    <div class="stamp yes">Inviter</div><div class="stamp no">Passer</div>
-    <div class="card-in">
+function profileBody(p){
+  return `<div class="card-in">
       <div class="who">${portrait(p,72,true)}
         <div><h2>${p.n}</h2>
           <p class="meta"><span>${p.a} ans, ${p.c}${distLabel(p)}</span>${p.v?`<span class="ver">${CHECK}Vérifié${p.f?'e':''}</span>`:''}${p.mine?'<span class="ver">Votre profil</span>':''}${presHTML(p)}</p>
@@ -585,6 +654,20 @@ function card(p){
         <div><dt>Limites</dt><dd class="tags lim">${p.lim.map(x=>`<span>${x}</span>`).join('')}</dd></div>
         <div><dt>Photos privées</dt><dd>${photosRow(p)}</dd></div>
       </dl>
+    </div>`;
+}
+function fullCard(p){return `<article class="card full">${profileBody(p)}</article>`}
+function card(p){
+  return `<article class="card" data-n="${p.n}">
+    <div class="stamp yes">Inviter</div><div class="stamp no">Passer</div>
+    <div class="card-in sum">
+      ${portrait(p,92,true)}
+      <h2>${p.n}</h2>
+      <p class="meta"><span>${p.a} ans, ${p.c}${distLabel(p)}</span></p>
+      <p class="meta">${p.v?`<span class="ver">${CHECK}Vérifié${p.f?'e':''}</span>`:''}${p.mine?'<span class="ver">Votre profil</span>':''}${presHTML(p)}</p>
+      <span class="seal">${p.r}</span>
+      <blockquote>${p.q}</blockquote>
+      <button class="more" data-full="${p.n}">Voir le profil complet</button>
     </div>
   </article>`;
 }
@@ -604,29 +687,47 @@ function renderDeck(){
 }
 
 function setPos(c,dx){
-  c.style.transform=`translateX(${dx}px) rotate(${dx/18}deg)`;
+  c.style.transform=`translate3d(${dx}px,0,0) rotate(${dx/22}deg)`;
   const y=c.querySelector('.stamp.yes'),n=c.querySelector('.stamp.no');
   y.style.opacity=Math.max(0,Math.min(1,dx/100));
   n.style.opacity=Math.max(0,Math.min(1,-dx/100));
 }
 
 function attachDrag(c){
-  let sx=0,dx=0,drag=false;
+  let sx=0,sy=0,dx=0,drag=false,moved=false,t0=0,last=[],raf=0;
+  const apply=()=>{raf=0;setPos(c,dx)};
   c.addEventListener('pointerdown',e=>{
-    if(busy||e.target.closest('button'))return;drag=true;sx=e.clientX;dx=0;
-    c.setPointerCapture(e.pointerId);c.style.transition='none';c.style.cursor='grabbing';
+    if(busy||e.target.closest('button'))return;
+    drag=true;moved=false;sx=e.clientX;sy=e.clientY;dx=0;
+    t0=performance.now();last=[[t0,e.clientX]];
+    try{c.setPointerCapture(e.pointerId)}catch(_){}
+    c.style.transition='none';c.style.cursor='grabbing';
   });
   c.addEventListener('pointermove',e=>{
-    if(!drag)return;dx=e.clientX-sx;setPos(c,dx);
+    if(!drag)return;
+    dx=e.clientX-sx;
+    if(Math.abs(dx)>6||Math.abs(e.clientY-sy)>6)moved=true;
+    const now=performance.now();
+    last.push([now,e.clientX]);
+    while(last.length>1&&now-last[0][0]>120)last.shift();
+    if(!raf)raf=requestAnimationFrame(apply);
   });
-  const end=()=>{
-    if(!drag)return;drag=false;c.style.cursor='';
-    c.style.transition='transform .25s ease';
-    if(Math.abs(dx)>110){decide(dx>0?'yes':'no')}
-    else{setPos(c,0)}
+  const end=cancelled=>{
+    if(!drag)return;
+    drag=false;c.style.cursor='';
+    if(raf){cancelAnimationFrame(raf);raf=0}
+    let vx=0;
+    if(last.length>1){const f=last[0],l=last[last.length-1];vx=(l[1]-f[1])/Math.max(1,l[0]-f[0])}
+    const far=Math.abs(dx)>90,fling=Math.abs(vx)>0.5&&Math.abs(dx)>30;
+    if(!cancelled&&(far||fling)){decide((far?dx:vx)>0?'yes':'no');return}
+    c.style.transition='transform .28s cubic-bezier(.2,.8,.2,1)';
+    setPos(c,0);
+    if(!cancelled&&!moved&&performance.now()-t0<400){
+      const q=P.find(x=>x.n===c.dataset.n);if(q)openFull(q);
+    }
   };
-  c.addEventListener('pointerup',end);
-  c.addEventListener('pointercancel',end);
+  c.addEventListener('pointerup',()=>end(false));
+  c.addEventListener('pointercancel',()=>end(true));
 }
 
 function decide(dir){
@@ -642,8 +743,7 @@ function decide(dir){
     idx++;busy=false;renderDeck();
     if(dir==='yes'){
       if(p.mine)toast('C’est votre profil : voici ce que les autres verront.');
-      else if(p.m)showMatch(p);
-      else toast('Invitation envoyée à '+p.n+'.');
+      else sendInvite(p);
     }
   },330);
 }
@@ -660,13 +760,13 @@ function showMatch(p){
   const o=$('#overlay');
   o.hidden=false;
   o.innerHTML=`<div class="modal">
-    <div class="pair">${portrait({h:200},84,true)}${portrait(p,84,true)}</div>
+    <div class="pair">${portrait(P.find(x=>x.mine)||{n:myName()},84,true)}${portrait(p,84,true)}</div>
     <h2>Accord mutuel avec ${p.n}</h2>
     <p>Vous pouvez maintenant vous écrire. Les photos privées restent soumises à l’autorisation de leur propriétaire.</p>
     <div class="row"><button class="btn ghost" id="m-go">Continuer</button><button class="btn" id="m-write">Écrire</button></div>
   </div>`;
   $('#m-go').onclick=()=>{o.hidden=true};
-  $('#m-write').onclick=()=>{o.hidden=true;show('messages')};
+  $('#m-write').onclick=()=>{o.hidden=true;openConvo(p.n);show('messages')};
   $('#m-write').focus();
 }
 
@@ -721,37 +821,81 @@ function updateResults(){
   $('#results').innerHTML=list.length?list.map(p=>`
     <div class="result">${portrait(p,52,true)}
       <div class="info"><b>${p.n}, ${p.a}</b><small>${p.r}, ${p.c}${distLabel(p)}${p.v?', vérifié'+(p.f?'e':''):''}</small><small>${presHTML(p)}</small></div>
-      ${p.mine?'<span class="muted">Votre profil</span>':`<button class="btn" data-n="${p.n}" ${sent.has(p.n)?'disabled':''}>${sent.has(p.n)?'Envoyée':'Inviter'}</button>`}
+      ${p.mine?'<span class="muted">Votre profil</span>':inviteBtn(p)}
     </div>`).join('')
     :`<p class="none">Aucun profil ne correspond. Élargissez la distance ou retirez un filtre.</p>`;
   $$('#results .btn').forEach(b=>b.addEventListener('click',()=>{
-    sent.add(b.dataset.n);b.disabled=true;b.textContent='Envoyée';
-    toast('Invitation envoyée à '+b.dataset.n+'.');
+    if(b.dataset.open){openConvo(b.dataset.open);show('messages');return}
+    sendInvite(P.find(x=>x.n===b.dataset.n));updateResults();
   }));
 }
 
 /* Messages */
-let photo='pending';
-const chatState={blocked:false,paused:false,muted:false,nudgeAt:0};
-const msgs=[
-  {w:'in',t:'Bonsoir Élise. Merci d’avoir accepté l’invitation.'},
-  {w:'out',t:'Bonsoir. J’ai lu votre profil avec attention.'},
-  {w:'in',t:'Je préfère qu’on se connaisse un peu avant. Puis-je vous envoyer une photo ?'}
-];
-const HOST=P[0];
+const newConvo=p=>({msgs:[{w:'sys',t:'Accord mutuel avec '+p.n+'. Dites bonjour.'}],st:{blocked:false,paused:false,muted:false,nudgeAt:0,photo:'none',isNew:true}});
+const T0=Date.now(),MIN=60000;
+let MID=0;
+const convos={
+  'Marc-Antoine':{
+    msgs:[
+      {w:'in',t:'Bonsoir Élise. Merci d’avoir accepté l’invitation.',at:T0-42*MIN},
+      {w:'out',t:'Bonsoir. J’ai lu votre profil avec attention.',at:T0-40*MIN,s:'read'},
+      {w:'in',t:'Je préfère qu’on se connaisse un peu avant. Puis-je vous envoyer une photo ?',at:T0-38*MIN},
+      {w:'photo',st:'pending'}
+    ],
+    st:{blocked:false,paused:false,muted:false,nudgeAt:0,photo:'pending',isNew:false}
+  }
+};
+let curName='Marc-Antoine';
+let HOST=P.find(x=>x.n===curName);
+let msgs=convos[curName].msgs;
+let chatState=convos[curName].st;
 const COOLDOWN=3600000;
 const myName=()=>me.n.replace(/[<>&"']/g,'').trim()||'Élise';
 const sysMsg=t=>msgs.push({w:'sys',t:t});
 
-function photoBlock(){
-  if(photo==='pending')return `<div class="photo">
-    <div class="thumb"><span class="pi" style="--h:${HOST.h}"></span><span class="pl">${LOCK}</span></div>
+const TL={sent:'Envoyé',delivered:'Distribué',read:'Lu'};
+const tickSVG=st=>st==='sent'
+  ?'<svg viewBox="0 0 16 11" aria-hidden="true"><path d="M1.5 5.8l3.2 3.2L10.5 1.5"/></svg>'
+  :'<svg viewBox="0 0 16 11" aria-hidden="true"><path d="M1 5.8l3.2 3.2L10 1.6"/><path d="M5.4 5.8l3.2 3.2L14.4 1.6"/></svg>';
+function pushOut(t){msgs.push({w:'out',t:t,at:Date.now(),s:'sent',id:++MID})}
+
+function photoCard(m,i){
+  if(m.st==='pending')return `<div class="photo">
+    <div class="thumb"><span class="pi"></span><span class="pl">${LOCK}</span></div>
     <p>${HOST.n} souhaite vous envoyer une photo. Elle reste floutée tant que vous n’avez pas accepté.</p>
-    <div class="row"><button class="btn ghost" data-a="refuse">Refuser</button><button class="btn" data-a="accept">Accepter</button></div></div>`;
-  if(photo==='accepted')return `<div class="photo">
-    <div class="thumb clear"><span class="pi" style="--h:${HOST.h};filter:none;inset:0"></span></div>
-    <p style="margin-bottom:0">Photo reçue avec votre accord.</p></div>`;
+    <div class="row"><button class="btn ghost" data-a="refuse" data-i="${i}">Refuser</button><button class="btn" data-a="accept" data-i="${i}">Accepter</button></div></div>`;
+  if(m.st==='accepted')return `<div class="photo"><div class="thumb clear"><span class="pi"></span></div><p style="margin-bottom:0">Photo reçue avec votre accord.</p></div>`;
   return `<div class="photo"><p class="muted" style="margin:0">Photo refusée et supprimée.</p></div>`;
+}
+function reqCard(m,i){
+  const pend=m.st==='pending';
+  return `<div class="reqmsg"><b>${m.title}</b><p>${m.t}</p><div class="rs">${pend?'En attente de la réponse de '+HOST.n:'Demande annulée'}</div>${pend?`<button class="link" data-a="cancel" data-i="${i}">Annuler la demande</button>`:''}</div>`;
+}
+function msgHTML(m,i){
+  if(m.id==null)m.id=++MID;
+  if(m.w==='sys')return `<div class="b sys">${m.t}</div>`;
+  if(m.w==='photo')return photoCard(m,i);
+  if(m.w==='req')return reqCard(m,i);
+  const tm=new Date(m.at||Date.now()).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  const st=m.s||'read';
+  const ticks=m.w==='out'?`<span class="ticks s-${st}" data-mid="${m.id}" role="img" aria-label="${TL[st]}">${tickSVG(st)}</span>`:'';
+  return `<div class="b ${m.w}"><span class="bt">${m.t}</span><span class="bm"><time>${tm}</time>${ticks}</span></div>`;
+}
+function tickUpdate(m){
+  const el=document.querySelector('[data-mid="'+m.id+'"]');
+  if(!el)return;
+  el.className='ticks s-'+m.s;el.innerHTML=tickSVG(m.s);el.setAttribute('aria-label',TL[m.s]);
+}
+function advanceTicks(){
+  const now=Date.now();
+  Object.keys(convos).forEach(n=>{
+    const p=P.find(x=>x.n===n);if(!p||!p.online||convos[n].st.blocked)return;
+    convos[n].msgs.forEach(m=>{
+      if(m.w!=='out')return;
+      if(m.s==='sent'&&now-m.at>800){m.s='delivered';m.dAt=now;tickUpdate(m)}
+      else if(m.s==='delivered'&&m.dAt&&now-m.dAt>2500){m.s='read';tickUpdate(m)}
+    });
+  });
 }
 
 function closeMenu(){
@@ -790,20 +934,23 @@ function renderMessages(keepDraft){
       <hr>
       <button role="menuitem" data-m="report"><b>Signaler</b><small>Prévient la modération.</small></button>
       <button role="menuitem" data-m="block" class="danger"><b>Bloquer ce contact</b><small>Plus aucun message ni aucune photo.</small></button>`;
+  const photos=msgs.filter(m=>m.w==='photo');
+  const showNotice=photos.some(m=>m.st==='pending')||!photos.length;
   const bar=st.blocked
     ?`<div class="statusbar"><span>Vous avez bloqué ${HOST.n}. Plus aucun message ni aucune photo ne vous parviendra.</span><button class="link" data-m="unblock">Débloquer</button></div>`
     :st.paused?`<div class="statusbar"><span>Conversation en pause. Plus personne ne peut écrire.</span><button class="link" data-m="pause">Reprendre</button></div>`:'';
   v.innerHTML=`
-    <div class="chat-head">${portrait(HOST,52,true)}
-      <div class="ch-i"><b>${HOST.n}</b><small>Dominant, accord mutuel ${presHTML(HOST)}${st.muted?', notifications coupées':''}</small></div>
+    <div class="chat-head">
+      <button class="ib" id="msg-back" aria-label="Retour aux messages"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+      ${portrait(HOST,52,true)}
+      <div class="ch-i"><b>${HOST.n}</b><small>${HOST.r}, accord mutuel ${presHTML(HOST)}${st.muted?', notifications coupées':''}</small></div>
       <button class="ib" id="menu-btn" aria-label="Options de la conversation" aria-haspopup="menu" aria-expanded="false" aria-controls="chat-menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
       <div class="menu" id="chat-menu" role="menu" hidden>${items}</div>
     </div>
-    <div class="notice">${LOCK}<span>Aucune photo n’arrive sans votre accord. Elles restent floutées tant que vous n’avez pas choisi.</span></div>
+    ${showNotice?`<div class="notice">${LOCK}<span>Aucune photo n’arrive sans votre accord. Elles restent floutées tant que vous n’avez pas choisi.</span></div>`:''}
     ${bar}
     <div class="chat" id="chat">
-      ${msgs.map(m=>`<div class="b ${m.w}">${m.t}</div>`).join('')}
-      ${st.blocked?'':photoBlock()}
+      ${msgs.map((m,i)=>msgHTML(m,i)).join('')}
     </div>
     <div class="composer">
       <button class="ib" id="ph" aria-label="Demander l’envoi d’une photo"${off?' disabled':''}>
@@ -816,19 +963,25 @@ function renderMessages(keepDraft){
     </div>`;
   const c=$('#chat');c.scrollTop=c.scrollHeight;
   $$('#chat [data-a]').forEach(b=>b.addEventListener('click',()=>{
-    const a=b.dataset.a;
-    if(a==='accept')photo='accepted';
-    if(a==='refuse')photo='refused';
+    const m=msgs[+b.dataset.i],a=b.dataset.a;if(!m)return;
+    if(a==='accept')m.st='accepted';
+    if(a==='refuse')m.st='refused';
+    if(a==='cancel')m.st='cancelled';
     renderMessages(true);
   }));
+  $('#msg-back').addEventListener('click',()=>{closeMenu();renderInbox()});
   $('#menu-btn').addEventListener('click',()=>{$('#chat-menu').hidden?openMenu():closeMenu()});
   $$('#v-messages [data-m]').forEach(b=>b.addEventListener('click',()=>{closeMenu();menuAction(b.dataset.m)}));
-  $('#ph').onclick=()=>toast('Une demande d’accord est envoyée à la destinataire avant toute photo.');
+  $('#ph').onclick=()=>{
+    if(msgs.some(m=>m.w==='req'&&m.kind==='photo'&&m.st==='pending')){toast('Une demande est déjà en attente.');return}
+    msgs.push({w:'req',kind:'photo',st:'pending',title:'Demande de photo',t:'Vous avez demandé l’accord de '+HOST.n+' avant de lui envoyer une photo.'});
+    renderMessages(true);
+  };
   const send=()=>{
     if(off)return;
     const i=$('#msg'),t=i.value.trim();
     if(!t)return;
-    msgs.push({w:'out',t:t.replace(/[<>&]/g,ch=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[ch]))});
+    pushOut(t.replace(/[<>&]/g,ch=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[ch])));
     renderMessages(false);$('#msg').focus();
   };
   $('#send').onclick=send;
@@ -912,9 +1065,10 @@ function photosRow(p){
   else stat=`<button class="btn small" data-req="${p.n}">Demander l’accès</button>`;
   return `<div class="prow" data-n="${p.n}"><div class="pthumbs">${th}</div><div class="pstat">${stat}</div></div>`;
 }
-$('#deck').addEventListener('click',e=>{
+document.addEventListener('click',e=>{
   const b=e.target.closest('[data-req]');if(!b)return;
   const n=b.dataset.req;access[n]='requested';
+  if(convos[n])convos[n].msgs.push({w:'req',kind:'access',st:'pending',title:'Demande d’accès',t:'Vous avez demandé l’accès à ses photos privées.'});
   b.closest('.prow').outerHTML=photosRow(P.find(x=>x.n===n));
   toast('Demande envoyée à '+n+'.');
 });
@@ -1057,10 +1211,11 @@ function renderAccess(){
     ${free.length?`<div class="chips">${free.map(n=>`<button class="chip" data-a="unlock" data-n="${n}">Ouvrir à ${n}</button>`).join('')}</div>`:'<p class="none">Tous vos contacts ont accès.</p>'}`;
   $$('#pf-access [data-a]').forEach(b=>b.addEventListener('click',()=>{
     const n=b.dataset.n,a=b.dataset.a;
-    if(a==='no'){own.requests=own.requests.filter(x=>x!==n);toast('Demande refusée.')}
-    if(a==='ok'){own.requests=own.requests.filter(x=>x!==n);if(!own.granted.includes(n))own.granted.push(n);toast('Vos photos privées sont ouvertes à '+n+'.')}
-    if(a==='rm'){own.granted=own.granted.filter(x=>x!==n);toast('Accès retiré à '+n+'.')}
-    if(a==='unlock'){if(!own.granted.includes(n))own.granted.push(n);toast('Vos photos privées sont ouvertes à '+n+'.')}
+    const note=t=>{if(convos[n])convos[n].msgs.push({w:'sys',t:t})};
+    if(a==='no'){own.requests=own.requests.filter(x=>x!==n);note('Vous avez refusé sa demande d’accès à vos photos privées.');toast('Demande refusée.')}
+    if(a==='ok'){own.requests=own.requests.filter(x=>x!==n);if(!own.granted.includes(n))own.granted.push(n);note('Vous avez ouvert l’accès à vos photos privées.');toast('Vos photos privées sont ouvertes à '+n+'.')}
+    if(a==='rm'){own.granted=own.granted.filter(x=>x!==n);note('Vous avez retiré l’accès à vos photos privées.');toast('Accès retiré à '+n+'.')}
+    if(a==='unlock'){if(!own.granted.includes(n))own.granted.push(n);note('Vous avez ouvert l’accès à vos photos privées.');toast('Vos photos privées sont ouvertes à '+n+'.')}
     renderAccess();
   }));
 }
@@ -1075,7 +1230,7 @@ function showPreview(){
     dyn:tags(me.dyn),lim:tags(me.lim),img:me.pub[0],priv:me.prv.length,pv:true,online:me.showOnline
   };
   const o=$('#overlay');o.hidden=false;
-  o.innerHTML=`<div class="pv-wrap"><p class="pv-t">Voici votre carte, telle que les autres la verront.</p><div class="pv">${card(p)}</div><div class="row"><button class="btn" id="pv-x">Fermer</button></div></div>`;
+  o.innerHTML=`<div class="pv-wrap"><p class="pv-t">Voici votre carte, telle que les autres la verront.</p><div class="pv">${fullCard(p)}</div><div class="row"><button class="btn" id="pv-x">Fermer</button></div></div>`;
   $('#pv-x').onclick=()=>{o.hidden=true};
   $('#pv-x').focus();
 }
@@ -1110,6 +1265,82 @@ function saveProfile(){
 }
 
 
+
+/* Invitations et boîte de réception */
+let msgView='list';
+const invites=[];
+const hasInvite=n=>invites.some(i=>i.n===n);
+const ago=t=>{const s=(Date.now()-t)/1000;return s<60?'À l’instant':s<3600?'Il y a '+Math.round(s/60)+' min':'Il y a '+Math.round(s/3600)+' h'};
+const lastPreview=c=>{const m=[...c.msgs].reverse().find(x=>x.w!=='sys')||c.msgs[c.msgs.length-1];return m?m.t:''};
+
+function updateBadge(){
+  const n=invites.filter(i=>!i.seen).length+Object.values(convos).filter(c=>c.st.isNew).length;
+  const b=$('#msg-badge');if(!b)return;
+  b.hidden=!n;b.textContent=n>9?'9+':n;
+}
+function inviteBtn(p){
+  if(convos[p.n])return `<button class="btn ghost" data-open="${p.n}">Écrire</button>`;
+  if(hasInvite(p.n))return `<button class="btn" data-n="${p.n}" disabled>Envoyée</button>`;
+  return `<button class="btn" data-n="${p.n}">Inviter</button>`;
+}
+function sendInvite(p){
+  if(!p||p.mine)return;
+  if(convos[p.n]){toast('Vous êtes déjà en contact avec '+p.n+'.');return}
+  if(hasInvite(p.n)){toast('Invitation déjà envoyée à '+p.n+'.');return}
+  if(p.m){convos[p.n]=newConvo(p);updateBadge();showMatch(p);return}
+  invites.push({n:p.n,at:Date.now(),seen:false});
+  updateBadge();
+  toast('Invitation envoyée à '+p.n+'. Retrouvez-la dans Messages.');
+  if(tab==='messages'&&msgView==='list')renderInbox();
+}
+function openConvo(n){
+  const c=convos[n];if(!c)return;
+  curName=n;HOST=P.find(x=>x.n===n);msgs=c.msgs;chatState=c.st;chatState.isNew=false;
+  msgView='thread';updateBadge();
+  renderMessages(false);
+}
+function renderMsgArea(){if(msgView==='thread')renderMessages(true);else renderInbox()}
+function renderInbox(){
+  msgView='list';
+  const v=$('#v-messages');
+  const cs=Object.keys(convos).map(n=>({p:P.find(x=>x.n===n),c:convos[n]})).filter(x=>x.p)
+    .sort((a,b)=>(b.c.st.isNew?1:0)-(a.c.st.isNew?1:0));
+  const inv=invites.map(i=>({i,p:P.find(x=>x.n===i.n)})).filter(x=>x.p);
+  v.innerHTML=`<div class="inbox">
+    <h2>Messages</h2>
+    <p class="a-t">Conversations</p>
+    ${cs.length?cs.map(({p,c})=>`<button class="crow" data-open="${p.n}">${portrait(p,52,true)}<span class="ci"><b>${p.n}</b><small class="prev">${lastPreview(c)}</small><small>${presHTML(p)}</small></span>${c.st.isNew?'<i class="nb">Nouveau</i>':''}</button>`).join(''):'<p class="none">Aucune conversation pour l’instant.</p>'}
+    <p class="a-t">Invitations envoyées</p>
+    ${inv.length?inv.map(({i,p})=>`<div class="crow">${portrait(p,52,true)}<span class="ci"><b>${p.n}</b><small>En attente de réponse</small><small>${ago(i.at)}</small></span>${i.seen?'':'<i class="nb">Nouveau</i>'}<button class="btn ghost small" data-cancel="${p.n}">Annuler</button></div>`).join(''):'<p class="none">Aucune invitation en attente. Invitez quelqu’un depuis Découvrir ou Recherche.</p>'}
+  </div>`;
+  $$('#v-messages [data-open]').forEach(b=>b.addEventListener('click',()=>openConvo(b.dataset.open)));
+  $$('#v-messages [data-cancel]').forEach(b=>b.addEventListener('click',()=>{
+    const n=b.dataset.cancel;
+    const k=invites.findIndex(x=>x.n===n);if(k>=0)invites.splice(k,1);
+    toast('Invitation à '+n+' annulée.');updateBadge();renderInbox();
+  }));
+}
+
+/* Profil complet */
+function closeFull(){const o=$('#overlay');o.hidden=true;o.onclick=null}
+function openFull(p){
+  if(busy)return;
+  const o=$('#overlay');o.hidden=false;
+  o.innerHTML=`<div class="sheet" role="document"><div class="sheet-body">${fullCard(p)}</div><div class="sheet-act"><button class="btn ghost" id="sh-x">Fermer</button>${p.mine?'':'<button class="btn" id="sh-yes">Inviter</button>'}</div></div>`;
+  o.onclick=e=>{if(e.target===o)closeFull()};
+  $('#sh-x').onclick=closeFull;
+  const y=$('#sh-yes');
+  if(y)y.onclick=()=>{closeFull();if(P[idx]===p)decide('yes');else sendInvite(p)};
+  $('#sh-x').focus();
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-full]');if(!b)return;
+  const q=P.find(x=>x.n===b.dataset.full);if(q)openFull(q);
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){const o=$('#overlay');if(!o.hidden&&o.querySelector('.sheet'))closeFull()}
+});
+
 /* Présence : bandeau, rafraîchissement, simulation */
 function updateOnlineCount(){
   const n=P.filter(p=>p.online&&!p.mine).length,c=$('#onl-c');
@@ -1137,9 +1368,11 @@ function refreshPresence(){
 
 renderDeck();
 renderSearch();
-renderMessages(false);
+renderInbox();
 renderProfile();
 renderStrip();
+updateBadge();
+setInterval(advanceTicks,1000);
 setInterval(()=>{
   if(document.hidden)return;
   const pool=P.filter(p=>!p.mine);
