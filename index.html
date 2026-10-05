@@ -432,59 +432,162 @@ input[type=range]{width:100%;accent-color:var(--gold)}
 .reqmsg p{margin:6px 0;font-size:14px;line-height:1.4}
 .reqmsg .rs{font-size:13px;color:var(--gold)}
 .reqmsg .link{display:block;margin-top:6px}
+
+/* Accueil en étapes */
+.landing{position:relative;overflow:hidden;height:100%}
+.stage{position:absolute;inset:0}
+.scr{position:absolute;inset:0;display:none;flex-direction:column;overflow-y:auto}
+.scr.on{display:flex;animation:scrIn .55s cubic-bezier(.2,.8,.2,1) both}
+@keyframes scrIn{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+.scr-in{width:100%;max-width:560px;margin:auto;padding:24px 24px 24px}
+.scr h2{font-family:var(--serif);font-weight:600;font-size:clamp(30px,8vw,40px);line-height:1.1;margin:0 0 10px;text-align:center}
+.scr h2:focus{outline:none}
+.scr .l-p{text-align:center;margin:0 auto 14px;color:var(--muted);font-size:16px;line-height:1.55}
+.scr .l-list{margin-top:18px}
+.scr .l-list>div{padding:13px 0}
+.scr .l-list h3{font-size:22px;margin:0 0 4px}
+.scr .l-list p{font-size:14.5px;line-height:1.5}
+.scr .l-rules{margin-top:14px}
+.scr .l-rules li{padding:11px 0 11px 30px;font-size:14.5px;line-height:1.5}
+.scr .l-rules li::before{top:19px}
+.scr .l-note{text-align:center;font-size:17px;margin-top:14px}
+.scr-act{display:flex;gap:10px;margin-top:22px}
+.scr-act .btn{flex:1;padding:14px 18px}
+.dots{display:flex;gap:12px;justify-content:center;margin:0 0 20px}
+.dots i{display:block;width:8px;height:8px;transform:rotate(45deg);border:1px solid var(--gold)}
+.dots i.on{background:var(--gold)}
+.scr .gate{margin-top:0}
+
+.doors{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;text-align:center}
+.doors[hidden]{display:none}
+.doors.open{pointer-events:none}
+.dp{position:absolute;top:0;bottom:0;width:50%;background:var(--bg);transition:transform 1.1s cubic-bezier(.7,0,.2,1)}
+.dp.l{left:0}
+.dp.r{right:0}
+.dp::before{content:"";position:absolute;top:18px;bottom:18px;border:1px solid var(--gold-line)}
+.dp.l::before{left:18px;right:9px}
+.dp.r::before{left:9px;right:18px}
+.dp::after{content:"";position:absolute;top:50%;width:9px;height:9px;margin-top:-5px;transform:rotate(45deg);border:1px solid var(--gold);background:var(--bg)}
+.dp.l::after{right:24px}
+.dp.r::after{left:24px}
+.door-in{position:relative;z-index:2;max-width:520px;padding:0 28px;display:flex;flex-direction:column;align-items:center;transition:opacity .5s ease,transform .9s ease}
+.doors.open .door-in{opacity:0;transform:scale(1.07)}
+.doors.open .dp.l{transform:translateX(-101%)}
+.doors.open .dp.r{transform:translateX(101%)}
+
+/* Création du profil avant d'entrer */
+.ob-bar,.ob-foot{display:none}
+.app.onboarding .tabs{display:none}
+.app.onboarding .pf h2,.app.onboarding .pf-intro,.app.onboarding .pf-actions{display:none}
+.app.onboarding .pf .group{display:none}
+.app.ob-1 .pf [data-ob="1"],.app.ob-2 .pf [data-ob="2"],.app.ob-3 .pf [data-ob="3"],.app.ob-4 .pf [data-ob="4"]{display:block}
+.app.onboarding .ob-bar{display:block;flex:none;padding:6px 20px 4px;text-align:center}
+.ob-bar .dots{margin:4px 0 10px}
+.ob-bar h2{font-family:var(--serif);font-weight:600;font-size:30px;line-height:1.1;margin:0}
+.ob-bar h2:focus{outline:none}
+.app.onboarding .ob-foot{display:flex;flex:none;gap:10px;padding:12px 20px 14px;border-top:1px solid var(--gold-line)}
+.ob-foot .btn{flex:1;padding:14px 18px}
+@media (min-width:900px){
+  .app.onboarding .ob-bar,.app.onboarding .ob-foot{width:100%;max-width:760px;margin:0 auto}
+  .app.onboarding .ob-bar{padding-top:32px}
+  .app.onboarding .pf{padding-top:12px}
+}
+
+/* Étapes compactes : tout tient sans défiler */
+.dp::after{top:auto;bottom:42px;margin-top:0}
+.scr-in{padding:14px 22px 16px}
+.dots{margin:0 0 12px}
+.scr h2{font-size:clamp(26px,7vw,34px);margin:0 0 6px}
+.scr .l-p{font-size:15px;line-height:1.45;margin:0 auto 8px}
+.scr .l-list{margin-top:10px}
+.scr .l-list>div{padding:9px 0}
+.scr .l-list h3{font-size:20px;margin:0 0 2px}
+.scr .l-list p{font-size:14px;line-height:1.42}
+.scr .l-rules{margin-top:8px}
+.scr .l-rules li{padding:8px 0 8px 28px;font-size:14px;line-height:1.42}
+.scr .l-rules li::before{top:15px}
+.scr .l-note{font-size:16px;margin-top:10px;line-height:1.3}
+.scr-act{margin-top:14px}
+.scr-act .btn{padding:13px 16px}
+.scr .gate{padding:22px 20px 20px}
+.scr .chk{padding:9px 0}
+.scr .l-enter{margin-top:12px;padding:14px 20px}
+@media (min-height:760px){
+  .scr-in{padding:24px 24px 24px}
+  .dots{margin-bottom:18px}
+  .scr .l-list>div{padding:13px 0}
+  .scr .l-rules li{padding:11px 0 11px 30px}
+  .scr .l-rules li::before{top:19px}
+  .scr-act{margin-top:20px}
+}
 </style>
 </head>
 <body>
-<main class="landing" id="landing" aria-label="Accueil">
-  <div class="l-wrap">
-    <section class="l-hero">
-      <h1 class="l-brand">Safeword</h1>
-      <div class="rule" aria-hidden="true"><i></i><b></b><i></i></div>
-      <p class="l-title">Chaque dynamique commence par un consentement.</p>
-      <p class="l-lead">La plateforme de rencontre des Dominants et des soumises, pensée pour la confiance, la discrétion et la sécurité des femmes.</p>
-      <a class="btn l-cta" href="#concept">Découvrir Safeword</a>
-    </section>
+<div class="landing" id="landing" role="main" aria-label="Accueil">
+  <div class="stage">
 
-    <section class="l-sec" id="concept">
-      <h2>Le concept</h2>
-      <p class="l-p">Safeword réunit des Dominants et des soumises qui cherchent un ou plusieurs partenaires, dans un cadre où le consentement n’est jamais une option.</p>
-      <div class="l-list">
-        <div><h3>Le profil avant la photo</h3><p>Votre rôle, ce que vous recherchez, vos pratiques et vos limites passent en premier. Les photos viennent ensuite.</p></div>
-        <div><h3>Deux façons de se trouver</h3><p>Faites défiler les profils d’un geste, ou lancez une recherche précise par rôle, type de relation et distance.</p></div>
-        <div><h3>Photos publiques, photos privées</h3><p>Chaque membre choisit ce qu’il montre à tous et ce qu’il réserve. Les photos privées ne s’ouvrent qu’avec son autorisation : il les débloque lui-même, ou il répond à une demande. En message, aucune image n’arrive sans l’accord de la destinataire.</p></div>
-        <div><h3>Gratuit</h3><p>L’application est gratuite pour rencontrer, rechercher et écrire.</p></div>
+    <section class="scr" id="scr-concept" aria-labelledby="h-concept">
+      <div class="scr-in">
+        <div class="dots" role="img" aria-label="Étape 1 sur 3"><i class="on"></i><i></i><i></i></div>
+        <h2 id="h-concept">Le concept</h2>
+        <p class="l-p">Safeword réunit des Dominants et des soumises qui cherchent un ou plusieurs partenaires, dans un cadre où le consentement n’est jamais une option.</p>
+        <div class="l-list">
+          <div><h3>Le profil avant la photo</h3><p>Rôle, attentes et limites passent en premier. Les photos viennent ensuite.</p></div>
+          <div><h3>Deux façons de se trouver</h3><p>Faites défiler les profils d’un geste, ou cherchez par rôle, relation et distance.</p></div>
+          <div><h3>Photos publiques, photos privées</h3><p>Chacun choisit ce qu’il montre. Les photos privées s’ouvrent sur autorisation.</p></div>
+          <div><h3>Gratuit</h3><p>Rencontrer, rechercher et écrire ne coûtent rien.</p></div>
+        </div>
+        <div class="scr-act"><button class="btn" data-go="rules">Continuer</button></div>
       </div>
     </section>
 
-    <section class="l-sec" id="regles">
-      <h2>Les règles de la maison</h2>
-      <p class="l-p">Elles s’appliquent à tous, sans exception.</p>
-      <ul class="l-rules">
-        <li>Le consentement passe avant tout. Un non, un silence ou une hésitation valent un refus, à tout moment.</li>
-        <li>Les limites affichées sur un profil sont respectées. Aucune insistance, aucune négociation.</li>
-        <li>Les photos privées ne s’ouvrent qu’avec l’autorisation de leur propriétaire, et aucune photo n’est envoyée en message sans l’accord de la destinataire.</li>
-        <li>Ce qui se dit ici reste ici : pas de capture d’écran, de partage ni de divulgation d’un profil ou d’une conversation.</li>
-        <li>Vous avez 18 ans ou plus et un seul profil, honnête. Les faux profils sont exclus.</li>
-        <li>Le harcèlement, la pression et les comportements agressifs entraînent une exclusion immédiate.</li>
-      </ul>
-      <p class="l-note">Conseil : pour une première rencontre, choisissez un lieu public et prévenez un proche.</p>
-    </section>
-
-    <section class="l-sec l-gate-sec" id="entrer">
-      <div class="gate">
-        <h2>Avant d’entrer</h2>
-        <p class="l-p">Validez les trois points pour accéder à Safeword.</p>
-        <label class="chk"><input type="checkbox"><span>J’ai 18 ans ou plus.</span></label>
-        <label class="chk"><input type="checkbox"><span>J’ai lu les règles de la maison et je les accepte.</span></label>
-        <label class="chk"><input type="checkbox"><span>Je comprends qu’un manquement au consentement entraîne mon exclusion.</span></label>
-        <button class="btn l-enter" id="enter" disabled>Entrer</button>
-        <p class="l-hint" id="gate-hint" role="status">Cochez les trois cases pour entrer.</p>
+    <section class="scr" id="scr-rules" aria-labelledby="h-rules">
+      <div class="scr-in">
+        <div class="dots" role="img" aria-label="Étape 2 sur 3"><i class="on"></i><i class="on"></i><i></i></div>
+        <h2 id="h-rules">Les règles de la maison</h2>
+        <p class="l-p">Elles s’appliquent à tous, sans exception.</p>
+        <ul class="l-rules">
+          <li>Le consentement passe avant tout. Un non, un silence ou une hésitation valent un refus.</li>
+          <li>Les limites affichées sur un profil sont respectées, sans insistance ni négociation.</li>
+          <li>Les photos privées ne s’ouvrent qu’avec l’accord de leur propriétaire. Aucune photo n’est envoyée en message sans l’accord de la destinataire.</li>
+          <li>Ce qui se dit ici reste ici : pas de capture d’écran, de partage ni de divulgation.</li>
+          <li>Vous avez 18 ans ou plus et un seul profil, honnête.</li>
+          <li>Harcèlement, pression et agressivité entraînent une exclusion immédiate.</li>
+        </ul>
+        <p class="l-note">Pour une première rencontre, choisissez un lieu public et prévenez un proche.</p>
+        <div class="scr-act"><button class="btn ghost" data-go="concept">Retour</button><button class="btn" data-go="gate">Continuer</button></div>
       </div>
     </section>
 
-    <footer class="l-foot">Maquette de démonstration. Les profils et les photos sont fictifs.</footer>
+    <section class="scr" id="scr-gate" aria-labelledby="h-gate">
+      <div class="scr-in">
+        <div class="dots" role="img" aria-label="Étape 3 sur 3"><i class="on"></i><i class="on"></i><i class="on"></i></div>
+        <div class="gate">
+          <h2 id="h-gate">Votre accord</h2>
+          <p class="l-p">Validez les trois points pour continuer.</p>
+          <label class="chk"><input type="checkbox"><span>J’ai 18 ans ou plus.</span></label>
+          <label class="chk"><input type="checkbox"><span>J’ai lu les règles de la maison et je les accepte.</span></label>
+          <label class="chk"><input type="checkbox"><span>Je comprends qu’un manquement au consentement entraîne mon exclusion.</span></label>
+          <button class="btn l-enter" id="enter" disabled>Créer mon profil</button>
+          <p class="l-hint" id="gate-hint" role="status">Cochez les trois cases pour continuer.</p>
+        </div>
+        <div class="scr-act"><button class="btn ghost" data-go="rules">Retour</button></div>
+      </div>
+    </section>
+
+    <div class="doors" id="doors">
+      <div class="dp l"></div><div class="dp r"></div>
+      <div class="door-in">
+        <h1 class="l-brand">Safeword</h1>
+        <div class="rule" aria-hidden="true"><i></i><b></b><i></i></div>
+        <p class="l-title">Chaque dynamique commence par un consentement.</p>
+        <p class="l-lead">La plateforme de rencontre des Dominants et des soumises, pensée pour la confiance, la discrétion et la sécurité des femmes.</p>
+        <button class="btn l-cta" id="open-door">Découvrir Safeword</button>
+      </div>
+    </div>
+
   </div>
-</main>
+</div>
 
 <div class="app" hidden>
   <header class="top">
@@ -1085,35 +1188,35 @@ const SUG={
 const MAXP=3,MAXV=6;
 
 function renderProfile(){
-  $('#v-profile').innerHTML=`<div class="pf">
+  $('#v-profile').innerHTML=`<div class="ob-bar" id="ob-bar"></div><div class="pf">
     <h2>Mon profil</h2>
     <p class="pf-intro">Votre profil passe avant vos photos : prenez le temps de le soigner.</p>
-    <div class="group"><span>Identité</span>
+    <div class="group" data-ob="1"><span>Identité</span>
       <div class="field"><label for="f-n">Pseudo</label><input id="f-n" maxlength="24" autocomplete="off"></div>
       <div class="two">
         <div class="field"><label for="f-a">Âge</label><input id="f-a" type="number" inputmode="numeric" min="18" max="99"></div>
         <div class="field"><label for="f-c">Ville</label><input id="f-c" maxlength="40" autocomplete="off" list="cities"><datalist id="cities">${CITY_NAMES.map(c=>`<option value="${c}">`).join('')}</datalist></div>
       </div>
     </div>
-    <div class="group"><span>Mon rôle</span><div class="chips" id="roles">${ROLES.map(r=>`<button class="chip" data-v="${r}" aria-pressed="false">${r}</button>`).join('')}</div></div>
-    <div class="group"><span>Ma phrase</span>
+    <div class="group" data-ob="1"><span>Mon rôle</span><div class="chips" id="roles">${ROLES.map(r=>`<button class="chip" data-v="${r}" aria-pressed="false">${r}</button>`).join('')}</div></div>
+    <div class="group" data-ob="2"><span>Ma phrase</span>
       <div class="field"><textarea id="f-q" maxlength="90" rows="2" placeholder="Une phrase qui vous ressemble" aria-label="Ma phrase"></textarea><small id="q-c">0/90</small></div>
     </div>
-    <div class="group"><span>Ce que je cherche</span>
+    <div class="group" data-ob="2"><span>Ce que je cherche</span>
       <div class="chips" id="rels">${Object.entries(REL).map(([k,l])=>`<button class="chip" data-v="${k}" aria-pressed="false">${l}</button>`).join('')}</div>
       <div class="field"><textarea id="f-s" maxlength="140" rows="2" placeholder="En quelques mots" aria-label="Ce que je cherche, en quelques mots"></textarea><small id="s-c">0/140</small></div>
     </div>
-    <div class="group"><span>Ma dynamique</span>
+    <div class="group" data-ob="3"><span>Ma dynamique</span>
       <div class="chips" id="dyn-s"></div>
       <div class="addrow"><input id="dyn-i" maxlength="30" placeholder="Ajouter la vôtre" aria-label="Ajouter une pratique"><button class="btn ghost small" id="dyn-b">Ajouter</button></div>
     </div>
-    <div class="group"><span>Mes limites</span>
+    <div class="group" data-ob="3"><span>Mes limites</span>
       <div class="chips" id="lim-s"></div>
       <div class="addrow"><input id="lim-i" maxlength="30" placeholder="Ajouter la vôtre" aria-label="Ajouter une limite"><button class="btn ghost small" id="lim-b">Ajouter</button></div>
     </div>
-    <div class="group"><div class="rowline"><div><span style="margin:0">Afficher quand je suis en ligne</span><div class="muted" style="font-size:13px;margin-top:2px">Les autres voient un point vert quand vous êtes connecté.</div></div>
+    <div class="group" data-ob="4"><div class="rowline"><div><span style="margin:0">Afficher quand je suis en ligne</span><div class="muted" style="font-size:13px;margin-top:2px">Les autres voient un point vert quand vous êtes connecté.</div></div>
       <button class="sw" id="f-on" role="switch" aria-checked="true" aria-label="Afficher quand je suis en ligne"></button></div></div>
-    <div class="group"><span>Mes photos</span>
+    <div class="group" data-ob="4"><span>Mes photos</span>
       <p class="pf-note">Dans cette maquette, vos photos restent sur votre appareil et ne sont envoyées nulle part.</p>
       <div id="pf-photos"></div>
     </div>
@@ -1126,7 +1229,8 @@ function renderProfile(){
       <button class="btn" id="pf-save">Enregistrer mon profil</button>
     </div>
     <p id="pf-msg" role="alert"></p>
-  </div>`;
+  </div>
+  <div class="ob-foot" id="ob-foot"></div>`;
   $('#f-n').addEventListener('input',e=>{me.n=e.target.value});
   $('#f-a').addEventListener('input',e=>{me.a=e.target.value});
   $('#f-c').addEventListener('input',e=>{me.c=e.target.value});
@@ -1152,7 +1256,7 @@ function renderProfile(){
     const mm=P.find(x=>x.mine);if(mm){mm.online=me.showOnline;refreshPresence()}
   });
   $('#pf-prev').addEventListener('click',showPreview);
-  $('#pf-save').addEventListener('click',saveProfile);
+  $('#pf-save').addEventListener('click',()=>saveProfile(false));
 }
 
 function renderTags(k,focusIdx){
@@ -1235,19 +1339,27 @@ function showPreview(){
   $('#pv-x').focus();
 }
 
-function saveProfile(){
+function validateProfile(){
   const e=[],a=+me.a;
   const name=me.n.replace(/[<>&"']/g,'').trim();
+  const cityInfo=cityLookup(me.c);
   if(!name)e.push('Choisissez un pseudo.');
   if(!(a>=18&&a<=99))e.push('Indiquez votre âge. Le minimum est 18 ans.');
-  const cityInfo=cityLookup(me.c);
   if(!me.c.trim())e.push('Indiquez votre ville.');
   else if(!cityInfo)e.push('Ville non reconnue dans cette maquette. Choisissez-en une dans la liste proposée.');
   if(!me.r)e.push('Choisissez votre rôle.');
-  const m=$('#pf-msg');
-  if(e.length){m.className='err';m.innerHTML=e.join('<br>');m.scrollIntoView({block:'center'});return}
+  return {e,name,cityInfo};
+}
+function showErrors(e){
+  const m=$('#pf-msg');m.className='err';m.innerHTML=e.join('<br>');
+  m.scrollIntoView({block:'center'});
+}
+function saveProfile(quiet){
+  const v=validateProfile();
+  if(v.e.length){showErrors(v.e);return false}
+  const cityInfo=v.cityInfo;
   const mine={
-    n:name,a:a,c:esc(cityInfo.name),d:0,r:me.r,h:40,v:false,f:me.r==='soumise',m:false,mine:true,pv:true,
+    n:v.name,a:+me.a,c:esc(cityInfo.name),d:0,r:me.r,h:40,v:false,f:me.r==='soumise',m:false,mine:true,pv:true,
     q:esc(me.q.trim()||'Une présentation à écrire.'),
     seek:esc(me.seek.trim()||[...me.rel].map(k=>REL[k]).join(', ')||'À préciser.'),
     dyn:me.dyn.length?me.dyn.map(esc):['À renseigner'],
@@ -1258,10 +1370,11 @@ function saveProfile(){
   if(at>=0)P.splice(at,1);
   P.unshift(mine);
   origin={name:cityInfo.name,set:true};recalcDistances();
-  idx=0;busy=false;renderDeck();renderStrip();updateResults();
-  m.className='okm';
-  m.textContent='Profil enregistré. Les distances sont maintenant calculées depuis '+cityInfo.name+'. Retrouvez votre profil en premier dans Découvrir et Recherche.';
-  toast('Profil enregistré.');
+  idx=quiet?1:0;busy=false;renderDeck();renderStrip();updateResults();
+  const m=$('#pf-msg');m.className='okm';
+  m.textContent='Profil enregistré. Les distances sont calculées depuis '+cityInfo.name+'. '+(quiet?'Retrouvez votre profil dans Recherche.':'Retrouvez votre profil en premier dans Découvrir et Recherche.');
+  if(!quiet)toast('Profil enregistré.');
+  return true;
 }
 
 
@@ -1383,24 +1496,74 @@ setInterval(()=>{
 },12000);
 
 
-/* Porte d'entrée */
+/* Accueil en étapes, puis création du profil */
 const LAND=$('#landing'),APPEL=document.querySelector('.app');
 function enterApp(){LAND.hidden=true;APPEL.hidden=false;window.scrollTo(0,0)}
 let passed=false;
 try{passed=sessionStorage.getItem('safeword-ok')==='1'}catch(e){}
 if(passed)enterApp();
+
+function go(name){
+  $$('.scr').forEach(sc=>sc.classList.toggle('on',sc.id==='scr-'+name));
+  const h=$('#scr-'+name+' h2');
+  if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}
+}
+function openDoors(){
+  const d=$('#doors');
+  if(d.classList.contains('open'))return;
+  go('concept');
+  d.classList.add('open');
+  setTimeout(()=>{d.hidden=true},1250);
+}
+$('#open-door').addEventListener('click',openDoors);
+$$('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+
 const checks=$$('.gate input'),enterBtn=$('#enter');
 checks.forEach(c=>c.addEventListener('change',()=>{
   const all=checks.every(x=>x.checked);
   enterBtn.disabled=!all;
-  $('#gate-hint').textContent=all?'Merci. Vous pouvez entrer.':'Cochez les trois cases pour entrer.';
+  $('#gate-hint').textContent=all?'Merci. Vous pouvez continuer.':'Cochez les trois cases pour continuer.';
 }));
 enterBtn.addEventListener('click',()=>{
   if(!checks.every(x=>x.checked))return;
-  try{sessionStorage.setItem('safeword-ok','1')}catch(e){}
-  enterApp();
+  startOnboarding();
 });
 
+const ob={on:false,step:1};
+const OB_T=['Qui êtes-vous ?','Votre présentation','Vos pratiques et vos limites','Vos photos'];
+function startOnboarding(){
+  LAND.hidden=true;APPEL.hidden=false;
+  ob.on=true;ob.step=1;
+  APPEL.classList.add('onboarding');
+  show('profile');
+  renderOb(false);
+}
+function renderOb(focus){
+  ['ob-1','ob-2','ob-3','ob-4'].forEach(c=>APPEL.classList.remove(c));
+  APPEL.classList.add('ob-'+ob.step);
+  $('#ob-bar').innerHTML=`<div class="dots" role="img" aria-label="Étape ${ob.step} sur 4">${[1,2,3,4].map(i=>`<i class="${i<=ob.step?'on':''}"></i>`).join('')}</div><h2 id="ob-h" tabindex="-1">${OB_T[ob.step-1]}</h2>`;
+  $('#ob-foot').innerHTML=`${ob.step>1?'<button class="btn ghost" id="ob-prev">Retour</button>':''}<button class="btn" id="ob-next">${ob.step===4?'Terminer':'Continuer'}</button>`;
+  const pv=$('#ob-prev');if(pv)pv.addEventListener('click',()=>{ob.step--;renderOb(true)});
+  $('#ob-next').addEventListener('click',obNext);
+  $('#pf-msg').textContent='';$('#pf-msg').className='';
+  const pf=$('#v-profile .pf');if(pf)pf.scrollTop=0;
+  if(focus)$('#ob-h').focus({preventScroll:true});
+}
+function obNext(){
+  if(ob.step===1){
+    const v=validateProfile();
+    if(v.e.length){showErrors(v.e);return}
+  }
+  if(ob.step<4){ob.step++;renderOb(true);return}
+  if(saveProfile(true))exitOnboarding();
+}
+function exitOnboarding(){
+  ob.on=false;
+  ['onboarding','ob-1','ob-2','ob-3','ob-4'].forEach(c=>APPEL.classList.remove(c));
+  try{sessionStorage.setItem('safeword-ok','1')}catch(e){}
+  show('discover');
+  toast('Bienvenue, '+myName()+'.');
+}
 </script>
 </body>
 </html>
